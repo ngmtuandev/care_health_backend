@@ -1,0 +1,1 @@
+jdk 20, spring security version 5
