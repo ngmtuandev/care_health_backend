@@ -1,5 +1,6 @@
 package com.care_health.care_health.configurations;
 
+import com.care_health.care_health.constant.SystemConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +35,10 @@ public class JwtAuthenticationsFilter extends OncePerRequestFilter {
 
         log.info("JwtProvider autowired: " + jwtProvider);
 
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken)  &&  bearerToken.startsWith("Bearer ")) {
-            System.out.println("not null");
+        String bearerToken = request.getHeader(SystemConstant.AUTHORIZATION);
+        if (StringUtils.hasText(bearerToken)  &&  bearerToken.startsWith(SystemConstant.BEARER)) {
             return bearerToken.substring(7);
         }
-        System.out.println("null");
         return null;
     }
 

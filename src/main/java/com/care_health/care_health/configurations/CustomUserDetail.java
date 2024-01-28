@@ -40,6 +40,8 @@ public class CustomUserDetail implements UserDetails {
     // from info user transfer info custom user detail of security
     public static CustomUserDetail mapUserToDetail(User user) {
 
+        System.out.println("CustomUserDetail");
+
         // get all role of user
         List<GrantedAuthority> listAuthoritys = user.getListRoles().stream()
                 .map(roleItem -> new SimpleGrantedAuthority(roleItem.getRoleName().name()))

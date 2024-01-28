@@ -1,5 +1,8 @@
 package com.care_health.care_health.controller.publicAPI;
 
+import com.care_health.care_health.constant.RoleConstant;
+import com.care_health.care_health.constant.SystemConstant;
+import com.care_health.care_health.constant.UserConstant;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.services.ImplService.UserServiceImpl;
@@ -9,20 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + UserConstant.API_USER)
 public class UserController {
 
     @Autowired
     UserServiceImpl userService;
 
-    @PostMapping("/register")
+    @PostMapping(UserConstant.API_REGISTER)
     public String registerUser(@RequestBody RegisterRequestDTO requestDTO) {
         String result =userService.register(requestDTO);
         return result;
     }
 
-    @PostMapping("/login")
+    @PostMapping(UserConstant.API_LOGIN)
     public String loginUser(@RequestBody LoginRequestDTO requestDTO) {
+        System.out.println("login");
         String result =userService.login(requestDTO);
         return result;
     }

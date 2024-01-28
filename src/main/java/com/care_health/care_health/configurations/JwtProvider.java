@@ -22,10 +22,10 @@ public class JwtProvider {
 
     /* create token from info user*/
     public String generateToken(CustomUserDetail customUserDetail) {
-
+        System.out.println("start generate");
         Date now = new Date();
         Date dateExpired = new Date(now.getTime() + JWT_EXPIRE);
-
+        System.out.println("generateToken");
         return Jwts.builder()
                 .setSubject(customUserDetail.getUsername())
                 .setIssuedAt(now)

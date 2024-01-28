@@ -1,5 +1,6 @@
 package com.care_health.care_health.configurations;
 
+import com.care_health.care_health.constant.SystemConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,19 +38,11 @@ public class WebSecurityConfig  {
     private static final String SHIPPER = "ROLE_SHIPPER";
 
     private static final String[] permitAllApis = {
-            "/api/categories/**",
             "/api/auth/**",
-            "/api/user/avartar/{avartarName}",
-            "/api/account/**",
-            "/api/product/**",
-            "/api/payment/**",
     };
 
     private static final String[] apiDoc = {
-            "/api/v1/auth/**",
-//            "/api/v1/role/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs.yaml",
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
             "/swagger-ui/**",
             "/swagger-ui.html"
     };
@@ -98,7 +91,6 @@ public class WebSecurityConfig  {
                         .requestMatchers(permitAllApis).permitAll()
                         .requestMatchers(apiDoc).permitAll()
                         .requestMatchers(anyAuthorityUserApis).hasAnyAuthority(USER)
-                        .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers(anyAuthorityAdminApis).hasAnyAuthority(ADMIN)
                         .anyRequest()
                         .authenticated())

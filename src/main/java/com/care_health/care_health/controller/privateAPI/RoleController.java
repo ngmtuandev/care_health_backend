@@ -1,5 +1,7 @@
 package com.care_health.care_health.controller.privateAPI;
 
+import com.care_health.care_health.constant.RoleConstant;
+import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.services.ImplService.RoleServiceImpl;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/role")
+@RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + RoleConstant.API_ROLE)
 public class RoleController {
 
     @Autowired

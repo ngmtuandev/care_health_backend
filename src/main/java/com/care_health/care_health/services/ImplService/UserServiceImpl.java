@@ -130,19 +130,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public String login(LoginRequestDTO requestLogin) {
 
+        System.out.println("sevice");
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestLogin.getUserName(), requestLogin.getPassword()));
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
+        System.out.println("authorities" + authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-
+        System.out.println("customUserDetail" + customUserDetail);
         /* generate token */
         String jwt = jwtProvider.generateToken(customUserDetail);
 
-
+        System.out.println("jwt" + jwt);
 
         List<String> listRoles = customUserDetail.getAuthorities().stream()
                 .map(item -> item.getAuthority()).collect(Collectors.toList());
