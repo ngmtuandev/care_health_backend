@@ -43,13 +43,14 @@ public class WebSecurityConfig  {
 
     private static final String[] apiDoc = {
             SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
             "/swagger-ui/**",
             "/swagger-ui.html"
     };
 
     private static final String[] anyAuthorityUserApis = {"/api/user/**"};
 
-    private static final String[] anyAuthorityAdminApis = {"/api/admin/**"};
+    private static final String[] anyAuthorityAdminApis = {SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + SystemConstant.API_ALL};
 
     @Bean
     JwtAuthenticationsFilter jwtAuthenticationFilter() {

@@ -2,22 +2,23 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.configurations.CustomUserDetail;
 import com.care_health.care_health.configurations.JwtProvider;
-import com.care_health.care_health.dtos.UserDTO;
+import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
+import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
+import com.care_health.care_health.helper.GenerateRandomPassword;
 import com.care_health.care_health.repositories.IUsersRepo;
 import com.care_health.care_health.services.IServices.IRoleService;
 import com.care_health.care_health.services.IServices.IUserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -37,12 +38,15 @@ public class UserServiceImpl implements IUserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(IUsersRepo usersRepo, IRoleService roleService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+    private final EmailServiceImpl emailService;
+
+    public UserServiceImpl(IUsersRepo usersRepo, IRoleService roleService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
         this.usersRepo = usersRepo;
         this.roleService = roleService;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -58,6 +62,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean existsByEmail(String email) {
         return usersRepo.existsByEmail(email);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return usersRepo.findByEmail(email);
     }
 
     @Override
@@ -151,4 +160,56 @@ public class UserServiceImpl implements IUserService {
 
         return jwt;
     }
+
+    @Override
+    public String addRoleForUser(UUID idUser, RoleRequestDTO roleName) {
+
+        System.out.println("role name ->>>" + roleName.getRoleName());
+
+        Optional<User> findUser = usersRepo.findById(idUser);
+
+        if (findUser.isEmpty()) {
+            return "Khong thay user";
+        }
+
+
+        User user = findUser.get();
+
+        ERole role = roleName.getRoleName();
+
+        if (role == null) {
+            return "Role khong hop le";
+        }
+
+        Optional<Roles> checkRole = roleService.findByRoleName(role);
+        if (!checkRole.isPresent()) {
+            return "Role not found";
+        }
+
+        user.addRole(checkRole.get());
+        usersRepo.save(user);
+
+        return "add role successfully";
+    }
+
+    @Override
+    public String resetPassword(EmailRequestDTO email) {
+        System.out.println("email ->>>>" + email.getEmail());
+        User user = findByEmail(email.getEmail());
+        System.out.println("find email ->>>" + user.getEmail());
+        if (user != null) {
+            String newPassword = GenerateRandomPassword.generateRandomPassword(8);
+            user.setPassword(passwordEncoder.encode(newPassword));
+            usersRepo.save(user);
+            System.out.println("save user with new password");
+            String subject = "Reset Password";
+            String text = "Your new password is: " + newPassword;
+            System.out.println("test ->>>>>" + text);
+            emailService.sendEmail(email.getEmail(), subject, text);
+            return "reset success";
+        }
+
+        return "reset failure";
+    }
+
 }

@@ -40,4 +40,12 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "RoleID"))
     private Set<Roles> listRoles = new HashSet<>();
 
+    public void addRole(Roles role) {
+        this.getListRoles().add(role);
+    }
+
+    public boolean removeRole(Roles role) {
+        return this.getListRoles().remove(role);
+    }
+
 }

@@ -8,4 +8,6 @@ public class UserConstant {
 
     public static final String API_LOGIN = "/login";
 
+    public static final String API_RESET_PASSWORD = "/resetPassword";
+
 }

@@ -1,12 +1,13 @@
 package com.care_health.care_health.controller.publicAPI;
 
-import com.care_health.care_health.constant.RoleConstant;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.constant.UserConstant;
+import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.services.ImplService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,13 @@ public class UserController {
     public String loginUser(@RequestBody LoginRequestDTO requestDTO) {
         System.out.println("login");
         String result =userService.login(requestDTO);
+        return result;
+    }
+
+    @PostMapping(UserConstant.API_RESET_PASSWORD)
+    public String resetPassword(@RequestBody EmailRequestDTO email) {
+        System.out.println("login");
+        String result =userService.resetPassword(email);
         return result;
     }
 
