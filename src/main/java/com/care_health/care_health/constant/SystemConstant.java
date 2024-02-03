@@ -20,6 +20,7 @@ public class SystemConstant {
     public static final String API_PUBLIC = "/public";
 
     public static final String API_ADMIN = "/admin";
+    public static final String API_USER = "/user";
     public static final String VERSION_1 = "/v1";
     public static final String SEND_MAIL = "/send-mail";
 

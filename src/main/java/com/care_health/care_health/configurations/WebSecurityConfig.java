@@ -35,22 +35,24 @@ public class WebSecurityConfig  {
 
     private static final String USER = "ROLE_USER";
     private static final String ADMIN = "ROLE_ADMIN";
-    private static final String SHIPPER = "ROLE_SHIPPER";
 
     private static final String[] permitAllApis = {
             "/api/auth/**",
     };
 
     private static final String[] apiDoc = {
-            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_USER + SystemConstant.API_ALL,
             SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
             "/swagger-ui/**",
             "/swagger-ui.html"
     };
 
-    private static final String[] anyAuthorityUserApis = {"/api/user/**"};
 
-    private static final String[] anyAuthorityAdminApis = {SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + SystemConstant.API_ALL};
+    private static final String[] anyAuthorityAdminApis = {
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + SystemConstant.API_ALL,
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + SystemConstant.API_ALL,
+            SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + SystemConstant.API_USER + SystemConstant.API_ALL,
+    };
 
     @Bean
     JwtAuthenticationsFilter jwtAuthenticationFilter() {
@@ -91,8 +93,9 @@ public class WebSecurityConfig  {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(permitAllApis).permitAll()
                         .requestMatchers(apiDoc).permitAll()
-                        .requestMatchers(anyAuthorityUserApis).hasAnyAuthority(USER)
+//                        .requestMatchers(anyAuthorityUserApis).hasAnyAuthority(USER)
                         .requestMatchers(anyAuthorityAdminApis).hasAnyAuthority(ADMIN)
+                        .requestMatchers("http://localhost:1001/care-health/api/v1/public/user/login").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

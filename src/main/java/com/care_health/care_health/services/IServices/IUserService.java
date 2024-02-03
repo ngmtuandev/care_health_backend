@@ -5,6 +5,7 @@ import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
 import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
+import com.care_health.care_health.dtos.response.user.UserProfileDTO;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 public interface IUserService {
 
-    public User findByUserName(String userName);
+    User findByUserName(String userName);
 
     boolean existsByUserName(String userName);
 
@@ -29,6 +30,12 @@ public interface IUserService {
     String addRoleForUser(UUID idUser, RoleRequestDTO roleName);
 
     String resetPassword(EmailRequestDTO email);
+
+    String deleteRoleOfUser (UUID idUser, RoleRequestDTO roleName);
+
+    UserProfileDTO getUserProfile(String token);
+
+    String deleteUser (String username);
 
 
 }

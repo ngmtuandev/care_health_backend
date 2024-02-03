@@ -20,6 +20,14 @@ public class JwtProvider {
     @Value("${jwt.expire}")
     private int JWT_EXPIRE;
 
+
+    private static String extractToken(String headerValue) {
+        if (headerValue == null || !headerValue.startsWith("Bearer ")) {
+            return null;
+        }
+        return headerValue.substring(7);
+    }
+
     /* create token from info user*/
     public String generateToken(CustomUserDetail customUserDetail) {
         System.out.println("start generate");
@@ -37,9 +45,10 @@ public class JwtProvider {
 
     // get username from jwt
     public String getUserNameFromJWT(String token) {
+        System.out.println("token in jwt provider " + token);
         Claims claims = Jwts.parser().setSigningKey(JWT_SECRET) // Claims: payload of json web token
-                .parseClaimsJws(token).getBody(); // get all data payload
-
+                .parseClaimsJws(extractToken(token)).getBody(); // get all data payload
+        System.out.println("claim successfully");
         return claims.getSubject();
 
     }

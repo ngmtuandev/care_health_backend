@@ -6,6 +6,7 @@ import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
 import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
+import com.care_health.care_health.dtos.response.user.UserProfileDTO;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
@@ -21,6 +22,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -139,8 +141,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public String login(LoginRequestDTO requestLogin) {
 
-        System.out.println("sevice");
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestLogin.getUserName(), requestLogin.getPassword()));
 
@@ -163,8 +163,6 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String addRoleForUser(UUID idUser, RoleRequestDTO roleName) {
-
-        System.out.println("role name ->>>" + roleName.getRoleName());
 
         Optional<User> findUser = usersRepo.findById(idUser);
 
@@ -194,9 +192,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String resetPassword(EmailRequestDTO email) {
-        System.out.println("email ->>>>" + email.getEmail());
         User user = findByEmail(email.getEmail());
-        System.out.println("find email ->>>" + user.getEmail());
         if (user != null) {
             String newPassword = GenerateRandomPassword.generateRandomPassword(8);
             user.setPassword(passwordEncoder.encode(newPassword));
@@ -210,6 +206,55 @@ public class UserServiceImpl implements IUserService {
         }
 
         return "reset failure";
+    }
+
+    @Override
+    public String deleteRoleOfUser(UUID idUser, RoleRequestDTO roleName) {
+        Optional<User> userOpt = usersRepo.findById(idUser);
+        User user = userOpt.get();
+        if (userOpt.isPresent()) {
+            ERole role = roleName.getRoleName();
+            Roles roleDeleteOfUser = roleService.findByRoleName(role).get();
+            boolean checkDeleteRole = user.removeRole(roleDeleteOfUser);
+            if (checkDeleteRole) {
+                usersRepo.save(user);
+                return "Delete role of user successfully";
+            }
+            return "Delete role failure";
+        }
+        return "Not found user";
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(String token) {
+        System.out.println("token : " + token);
+        String userName = jwtProvider.getUserNameFromJWT(token);
+        if (userName != null) {
+            User userProfile = findByUserName(userName);
+            if (userProfile != null) {
+                UserProfileDTO userProfileDetail = UserProfileDTO.builder()
+                        .userName(userProfile.getUserName())
+                        .isUserStatus(true)
+                        .email(userProfile.getEmail())
+                        .listRoles(userProfile.getListRoles())
+                        .build();
+                return userProfileDetail;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String deleteUser(String username) {
+        User user = findByUserName(username);
+
+        if (user != null) {
+            System.out.println("find user successfully");
+            usersRepo.deleteById(user.getId());
+            return "delete user successfully";
+        }
+
+        return "delete user failure";
     }
 
 }

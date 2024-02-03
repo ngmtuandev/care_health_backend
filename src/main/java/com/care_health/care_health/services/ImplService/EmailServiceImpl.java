@@ -16,12 +16,10 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendEmail(String to, String subject, String text) {
-        System.out.println("start send email");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        System.out.println("set ok not success");
         javaMailSender.send(message);
     }
 }

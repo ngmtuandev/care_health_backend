@@ -20,10 +20,28 @@ public class UserControllerPrivate {
     UserServiceImpl userService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{id}")
+    @PostMapping(UserConstant.API_ADD_ROLE)
     public String addRoleForUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
 
         String result = userService.addRoleForUser(id, roles);
+
+        return result;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(UserConstant.API_DELETE_ROLE)
+    public String deleteRoleOfUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
+
+        String result = userService.deleteRoleOfUser(id, roles);
+
+        return result;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(UserConstant.API_DELETE_USER)
+    public String deleteUser(@PathVariable String username) {
+        System.out.println("Delete user");
+        String result = userService.deleteUser(username);
 
         return result;
     }
