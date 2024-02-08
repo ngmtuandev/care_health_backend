@@ -6,6 +6,7 @@ import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.dtos.response.user.UserProfileDTO;
+import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
@@ -23,19 +24,21 @@ public interface IUserService {
 
     User findByEmail(String email);
 
-    String register(RegisterRequestDTO request);
+    UserResponse register(RegisterRequestDTO request);
 
-    String login(LoginRequestDTO requestLogin);
+    UserResponse login(LoginRequestDTO requestLogin);
 
-    String addRoleForUser(UUID idUser, RoleRequestDTO roleName);
+    UserResponse addRoleForUser(UUID idUser, RoleRequestDTO roleName);
 
-    String resetPassword(EmailRequestDTO email);
+    UserResponse resetPassword(EmailRequestDTO email);
 
-    String deleteRoleOfUser (UUID idUser, RoleRequestDTO roleName);
+    UserResponse deleteRoleOfUser (UUID idUser, RoleRequestDTO roleName);
 
-    UserProfileDTO getUserProfile(String token);
+    UserResponse getUserProfile(String token);
 
-    String deleteUser (String username);
+    UserResponse deleteUser (String username);
+
+    UserResponse getAllUser();
 
 
 }

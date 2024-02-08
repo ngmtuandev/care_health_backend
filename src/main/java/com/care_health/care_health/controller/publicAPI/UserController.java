@@ -6,8 +6,12 @@ import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.dtos.response.user.UserProfileDTO;
+import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.services.ImplService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,30 +25,30 @@ public class UserController {
     UserServiceImpl userService;
 
     @PostMapping(UserConstant.API_REGISTER)
-    public String registerUser(@RequestBody RegisterRequestDTO requestDTO) {
-        String result =userService.register(requestDTO);
-        return result;
+    public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterRequestDTO requestDTO) {
+        UserResponse result =userService.register(requestDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(UserConstant.API_LOGIN)
-    public String loginUser(@RequestBody LoginRequestDTO requestDTO) {
-        String result =userService.login(requestDTO);
-        return result;
+    public ResponseEntity<UserResponse> loginUser(@RequestBody LoginRequestDTO requestDTO) {
+        UserResponse result =userService.login(requestDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(UserConstant.API_RESET_PASSWORD)
-    public String resetPassword(@RequestBody EmailRequestDTO email) {
+    public ResponseEntity<UserResponse> resetPassword(@RequestBody EmailRequestDTO email) {
         System.out.println("login");
-        String result =userService.resetPassword(email);
-        return result;
+        UserResponse result =userService.resetPassword(email);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping(UserConstant.API_GET_PROFILE)
-    public UserProfileDTO getProfile(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserResponse> getProfile(@RequestHeader("Authorization") String token) {
         System.out.println("get profile");
         System.out.println("String token ->>>>>>>" + token);
-        UserProfileDTO result = userService.getUserProfile(token);
-        return result;
+        UserResponse result = userService.getUserProfile(token);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

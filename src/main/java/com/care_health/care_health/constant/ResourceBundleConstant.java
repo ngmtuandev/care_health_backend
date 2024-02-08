@@ -8,21 +8,6 @@ public class ResourceBundleConstant {
     public static final String ERROR_SERVER = "ERROR_SERVER";
     public static final String ERROR_VALIDATION_FIELD = "ERROR_VALIDATION_FIELD";
 
-    // Permission
-    public static final String PMS_001 = "PMS_001";
-    public static final String PMS_002 = "PMS_002";
-    public static final String PMS_003 = "PMS_003";
-    public static final String PMS_004 = "PMS_004";
-    public static final String PMS_005 = "PMS_005";
-
-
-    // User role
-    public static final String USR_R_001 = "USR_R_001";
-    public static final String USR_R_002 = "USR_R_002";
-    public static final String USR_R_003 = "USR_R_003";
-    public static final String USR_R_004 = "USR_R_004";
-    public static final String USR_R_005 = "USR_R_005";
-
 
     // Role
     public static final String RL_001 = "RL_001";
@@ -38,6 +23,27 @@ public class ResourceBundleConstant {
     public static final String USR_003 = "USR_003";
     public static final String USR_004 = "USR_004";
     public static final String USR_005 = "USR_005";
+    public static final String USR_006 = "USR_006";
+    public static final String USR_007 = "USR_007";
+    public static final String USR_008 = "USR_008";
+    public static final String USR_009 = "USR_009";
+    public static final String USR_010 = "USR_010";
+    public static final String USR_011 = "USR_011";
+    public static final String USR_012 = "USR_012";
+    public static final String USR_013 = "USR_013";
+    public static final String USR_014 = "USR_014";
+    public static final String USR_015 = "USR_015";
+
+    // Role
+    public static final String ROL_001 = "ROL_001";
+    public static final String ROL_002 = "ROL_002";
+    public static final String ROL_003 = "ROL_003";
+    public static final String ROL_004 = "ROL_004";
+    public static final String ROL_005 = "ROL_005";
+    public static final String ROL_006 = "ROL_006";
+    public static final String ROL_007 = "ROL_007";
+    public static final String ROL_008 = "ROL_008";
+    public static final String ROL_009 = "ROL_009";
 
 
 

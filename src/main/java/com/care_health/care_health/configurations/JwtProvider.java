@@ -21,13 +21,6 @@ public class JwtProvider {
     private int JWT_EXPIRE;
 
 
-    private static String extractToken(String headerValue) {
-        if (headerValue == null || !headerValue.startsWith("Bearer ")) {
-            return null;
-        }
-        return headerValue.substring(7);
-    }
-
     /* create token from info user*/
     public String generateToken(CustomUserDetail customUserDetail) {
         System.out.println("start generate");
@@ -45,9 +38,15 @@ public class JwtProvider {
 
     // get username from jwt
     public String getUserNameFromJWT(String token) {
+        if (token != null && token.startsWith("Bearer ") || token != null && token.startsWith("bearer ")) {
+            token = token.substring(7); // Loại bỏ phần 'Bearer ' khỏi token
+        }
+
         System.out.println("token in jwt provider " + token);
-        Claims claims = Jwts.parser().setSigningKey(JWT_SECRET) // Claims: payload of json web token
-                .parseClaimsJws(extractToken(token)).getBody(); // get all data payload
+
+        // Tiếp tục xử lý token đã được loại bỏ 'Bearer '
+        Claims claims = Jwts.parser().setSigningKey(JWT_SECRET)
+                .parseClaimsJws(token).getBody();
         System.out.println("claim successfully");
         return claims.getSubject();
 

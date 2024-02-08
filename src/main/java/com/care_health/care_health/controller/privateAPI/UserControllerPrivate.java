@@ -3,10 +3,13 @@ package com.care_health.care_health.controller.privateAPI;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.constant.UserConstant;
 import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
+import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.services.ImplService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +24,40 @@ public class UserControllerPrivate {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_ADD_ROLE)
-    public String addRoleForUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
+    public ResponseEntity<UserResponse> addRoleForUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
 
-        String result = userService.addRoleForUser(id, roles);
+        UserResponse result = userService.addRoleForUser(id, roles);
 
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_DELETE_ROLE)
-    public String deleteRoleOfUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
+    public ResponseEntity<UserResponse> deleteRoleOfUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
 
-        String result = userService.deleteRoleOfUser(id, roles);
+        System.out.println("edit delete role");
 
-        return result;
+        UserResponse result = userService.deleteRoleOfUser(id, roles);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_DELETE_USER)
-    public String deleteUser(@PathVariable String username) {
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable String username) {
         System.out.println("Delete user");
-        String result = userService.deleteUser(username);
+        UserResponse result = userService.deleteUser(username);
 
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(UserConstant.API_LIST_USER)
+    public ResponseEntity<UserResponse> getAlllUser() {
+        System.out.println("get all user");
+        UserResponse result = userService.getAllUser();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
 }

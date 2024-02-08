@@ -2,11 +2,14 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.configurations.CustomUserDetail;
 import com.care_health.care_health.configurations.JwtProvider;
+import com.care_health.care_health.constant.ResourceBundleConstant;
+import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
 import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
 import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
 import com.care_health.care_health.dtos.response.user.UserProfileDTO;
+import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
 import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
@@ -14,6 +17,7 @@ import com.care_health.care_health.helper.GenerateRandomPassword;
 import com.care_health.care_health.repositories.IUsersRepo;
 import com.care_health.care_health.services.IServices.IRoleService;
 import com.care_health.care_health.services.IServices.IUserService;
+import com.care_health.care_health.utils.BaseAmenityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,13 +46,16 @@ public class UserServiceImpl implements IUserService {
 
     private final EmailServiceImpl emailService;
 
-    public UserServiceImpl(IUsersRepo usersRepo, IRoleService roleService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
+    private final BaseAmenityUtil baseAmenityUtil;
+
+    public UserServiceImpl(IUsersRepo usersRepo, IRoleService roleService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, EmailServiceImpl emailService, BaseAmenityUtil baseAmenityUtil) {
         this.usersRepo = usersRepo;
         this.roleService = roleService;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.baseAmenityUtil = baseAmenityUtil;
     }
 
     @Override
@@ -71,14 +78,29 @@ public class UserServiceImpl implements IUserService {
         return usersRepo.findByEmail(email);
     }
 
+
+    private String getMessageBundle(String key) {
+        return baseAmenityUtil.getMessageBundle(key);
+    }
+
     @Override
-    public String register(RegisterRequestDTO request) {
+    public UserResponse register(RegisterRequestDTO request) {
 
         if (existsByUserName(request.getUserName())) {
-            return "user da ton tai";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_001)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_001))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
         if (existsByEmail(request.getEmail())) {
-            return "email da ton tai";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_001)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_001))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
         User newUser = new User();
@@ -89,8 +111,6 @@ public class UserServiceImpl implements IUserService {
         newUser.setPassword(encodedPassword);
 
         newUser.setUserStatus(true);
-        newUser.setLastModifiedBy(null);
-        newUser.setCreatedBy(request.getUserName());
 
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         Date dateCreated = new Date();
@@ -135,39 +155,54 @@ public class UserServiceImpl implements IUserService {
         newUser.setListRoles(listRoles);
         usersRepo.save(newUser);
 
-        return "register successfully";
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_002)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.USR_002))
+                .data(newUser)
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public String login(LoginRequestDTO requestLogin) {
+    public UserResponse login(LoginRequestDTO requestLogin) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestLogin.getUserName(), requestLogin.getPassword()));
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        System.out.println("authorities" + authorities);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        System.out.println("customUserDetail" + customUserDetail);
+
         /* generate token */
         String jwt = jwtProvider.generateToken(customUserDetail);
-
-        System.out.println("jwt" + jwt);
 
         List<String> listRoles = customUserDetail.getAuthorities().stream()
                 .map(item -> item.getAuthority()).collect(Collectors.toList());
 
-        return jwt;
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_003)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.USR_003))
+                .data(jwt)
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public String addRoleForUser(UUID idUser, RoleRequestDTO roleName) {
+    public UserResponse addRoleForUser(UUID idUser, RoleRequestDTO roleName) {
 
         Optional<User> findUser = usersRepo.findById(idUser);
 
         if (findUser.isEmpty()) {
-            return "Khong thay user";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_004)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_004))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
 
@@ -176,22 +211,37 @@ public class UserServiceImpl implements IUserService {
         ERole role = roleName.getRoleName();
 
         if (role == null) {
-            return "Role khong hop le";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.ROL_001)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.ROL_001))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
         Optional<Roles> checkRole = roleService.findByRoleName(role);
         if (!checkRole.isPresent()) {
-            return "Role not found";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.ROL_001)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.ROL_001))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
         user.addRole(checkRole.get());
         usersRepo.save(user);
 
-        return "add role successfully";
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.ROL_002)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.ROL_002))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public String resetPassword(EmailRequestDTO email) {
+    public UserResponse resetPassword(EmailRequestDTO email) {
         User user = findByEmail(email.getEmail());
         if (user != null) {
             String newPassword = GenerateRandomPassword.generateRandomPassword(8);
@@ -200,16 +250,25 @@ public class UserServiceImpl implements IUserService {
             System.out.println("save user with new password");
             String subject = "Reset Password";
             String text = "Your new password is: " + newPassword;
-            System.out.println("test ->>>>>" + text);
             emailService.sendEmail(email.getEmail(), subject, text);
-            return "reset success";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_006)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_006))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
-        return "reset failure";
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_007)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.USR_007))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public String deleteRoleOfUser(UUID idUser, RoleRequestDTO roleName) {
+    public UserResponse deleteRoleOfUser(UUID idUser, RoleRequestDTO roleName) {
         Optional<User> userOpt = usersRepo.findById(idUser);
         User user = userOpt.get();
         if (userOpt.isPresent()) {
@@ -218,43 +277,91 @@ public class UserServiceImpl implements IUserService {
             boolean checkDeleteRole = user.removeRole(roleDeleteOfUser);
             if (checkDeleteRole) {
                 usersRepo.save(user);
-                return "Delete role of user successfully";
+                return UserResponse.builder()
+                        .code(ResourceBundleConstant.USR_011)
+                        .status(SystemConstant.STATUS_CODE_SUCCESS)
+                        .message(getMessageBundle(ResourceBundleConstant.USR_011))
+                        .responseTime(baseAmenityUtil.currentTimeSeconds())
+                        .build();
             }
-            return "Delete role failure";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_012)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_012))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
-        return "Not found user";
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_010)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.USR_010))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public UserProfileDTO getUserProfile(String token) {
-        System.out.println("token : " + token);
+    public UserResponse getUserProfile(String token) {
         String userName = jwtProvider.getUserNameFromJWT(token);
         if (userName != null) {
             User userProfile = findByUserName(userName);
             if (userProfile != null) {
                 UserProfileDTO userProfileDetail = UserProfileDTO.builder()
+                        .id(userProfile.getId())
                         .userName(userProfile.getUserName())
                         .isUserStatus(true)
                         .email(userProfile.getEmail())
                         .listRoles(userProfile.getListRoles())
                         .build();
-                return userProfileDetail;
+                return UserResponse.builder()
+                        .code(ResourceBundleConstant.USR_009)
+                        .status(SystemConstant.STATUS_CODE_SUCCESS)
+                        .message(getMessageBundle(ResourceBundleConstant.USR_009))
+                        .data(userProfileDetail)
+                        .responseTime(baseAmenityUtil.currentTimeSeconds())
+                        .build();
             }
         }
-        return null;
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_010)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.USR_010))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public String deleteUser(String username) {
+    public UserResponse deleteUser(String username) {
         User user = findByUserName(username);
 
         if (user != null) {
             System.out.println("find user successfully");
             usersRepo.deleteById(user.getId());
-            return "delete user successfully";
+            return UserResponse.builder()
+                    .code(ResourceBundleConstant.USR_013)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .message(getMessageBundle(ResourceBundleConstant.USR_013))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
-        return "delete user failure";
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_004)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.USR_010))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public UserResponse getAllUser() {
+        List<User> allUsers = usersRepo.findAll();
+        return UserResponse.builder()
+                .code(ResourceBundleConstant.USR_014)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.USR_014))
+                .data(allUsers)
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
 }

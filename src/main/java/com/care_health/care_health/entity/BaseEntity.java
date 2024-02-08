@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
+@EnableJpaAuditing
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
@@ -29,13 +31,7 @@ public abstract class BaseEntity {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date createdDate;
 
-    @CreatedBy
-    private String createdBy;
-
     @LastModifiedDate
     private Date lastModifiedDate;
-
-    @LastModifiedBy
-    private String lastModifiedBy;
 
 }

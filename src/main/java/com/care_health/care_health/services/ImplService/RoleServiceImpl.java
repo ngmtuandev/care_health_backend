@@ -1,10 +1,17 @@
 package com.care_health.care_health.services.ImplService;
 
+import com.care_health.care_health.constant.ResourceBundleConstant;
+import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
+import com.care_health.care_health.dtos.response.role.RoleResponse;
+import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
+import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.repositories.IRoleRepo;
+import com.care_health.care_health.repositories.IUsersRepo;
 import com.care_health.care_health.services.IServices.IRoleService;
+import com.care_health.care_health.utils.BaseAmenityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +22,14 @@ public class RoleServiceImpl implements IRoleService {
 
     private final IRoleRepo roleRepo;
 
-    public RoleServiceImpl(IRoleRepo roleRepo) {
+    private final IUsersRepo usersRepo;
+
+    private final BaseAmenityUtil baseAmenityUtil;
+
+    public RoleServiceImpl(IRoleRepo roleRepo, IUsersRepo usersRepo, BaseAmenityUtil baseAmenityUtil) {
         this.roleRepo = roleRepo;
+        this.usersRepo = usersRepo;
+        this.baseAmenityUtil = baseAmenityUtil;
     }
 
     @Override
@@ -24,13 +37,22 @@ public class RoleServiceImpl implements IRoleService {
         return roleRepo.findByRoleName(roleName);
     }
 
+    private String getMessageBundle(String key) {
+        return baseAmenityUtil.getMessageBundle(key);
+    }
+
     @Override
-    public String createRole(RoleRequestDTO role) {
+    public RoleResponse createRole(RoleRequestDTO role) {
 
         Optional<Roles> findRole = findByRoleName(role.getRoleName());
 
         if (findRole.isPresent()) {
-            return "role da ton tai";
+            return RoleResponse.builder()
+                    .code(ResourceBundleConstant.ROL_002)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.ROL_002))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
         Roles newRole = new Roles();
@@ -38,12 +60,47 @@ public class RoleServiceImpl implements IRoleService {
 
         roleRepo.save(newRole);
 
-        return "tao role thanh cong";
+        return RoleResponse.builder()
+                .code(ResourceBundleConstant.ROL_001)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.ROL_001))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
     @Override
-    public List<Roles> getAllRoles() {
+    public RoleResponse getAllRoles() {
         List<Roles> allRole = roleRepo.findAll();
-        return allRole;
+        return RoleResponse.builder()
+                .code(ResourceBundleConstant.ROL_003)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.ROL_003))
+                .data(allRole)
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
+
+//    @Override
+//    public RoleResponse deleteRole(ERole roleName) {
+//        int roleDelete = roleRepo.deleteByRoleName(roleName);
+//        List<User> usersWithRoleDelete = usersRepo.findByRolesContaining(roleName);
+//        for (User user : usersWithRoleDelete) {
+//            user.getListRoles().removeIf(role -> role.equals(roleName));
+//        }
+//        if (roleDelete > 0) {
+//            usersRepo.saveAll(usersWithRoleDelete);
+//            return RoleResponse.builder()
+//                    .code(ResourceBundleConstant.ROL_004)
+//                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+//                    .message(getMessageBundle(ResourceBundleConstant.ROL_004))
+//                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+//                    .build();
+//        }
+//        return RoleResponse.builder()
+//                .code(ResourceBundleConstant.ROL_005)
+//                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+//                .message(getMessageBundle(ResourceBundleConstant.ROL_005))
+//                .responseTime(baseAmenityUtil.currentTimeSeconds())
+//                .build();
+//    }
 }

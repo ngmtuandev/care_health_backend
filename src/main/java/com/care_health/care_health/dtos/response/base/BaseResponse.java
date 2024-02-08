@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
-public class BaseResponse {
+public abstract class BaseResponse {
     private String code;
 
     private Integer status;

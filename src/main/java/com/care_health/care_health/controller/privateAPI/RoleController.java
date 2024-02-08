@@ -4,13 +4,14 @@ import com.care_health.care_health.constant.RoleConstant;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
 import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
+import com.care_health.care_health.dtos.response.role.RoleResponse;
+import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.services.ImplService.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_ADMIN + RoleConstant.API_ROLES)
@@ -21,11 +22,21 @@ public class RoleController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public String registerCreateRole(@RequestBody RoleRequestDTO role) {
+    public ResponseEntity<RoleResponse> registerCreateRole(@RequestBody RoleRequestDTO role) {
 
-        String result =roleService.createRole(role);
+        RoleResponse result =roleService.createRole(role);
 
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(RoleConstant.API_GET_ROLES)
+    public ResponseEntity<RoleResponse> getAllRole() {
+
+        RoleResponse result =roleService.getAllRoles();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
 }
