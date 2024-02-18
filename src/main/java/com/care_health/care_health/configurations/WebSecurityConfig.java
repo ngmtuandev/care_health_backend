@@ -80,6 +80,9 @@ public class WebSecurityConfig  {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationsFilter jwtAuthenticationsFilter) throws Exception {
+
+        System.out.println("security filter - Web security Config");
+
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(corsConfigurer -> {
                     CorsConfigurationSource source = request -> {
@@ -94,7 +97,8 @@ public class WebSecurityConfig  {
                         .requestMatchers(permitAllApis).permitAll()
                         .requestMatchers(apiDoc).permitAll()
 //                        .requestMatchers(anyAuthorityUserApis).hasAnyAuthority(USER)
-                        .requestMatchers(anyAuthorityAdminApis).hasAnyAuthority(ADMIN)
+//                        .requestMatchers(anyAuthorityAdminApis).hasAnyAuthority(ADMIN)
+                        .requestMatchers(anyAuthorityAdminApis).permitAll()
                         .requestMatchers("http://localhost:1001/care-health/api/v1/public/user/login").permitAll()
                         .anyRequest()
                         .authenticated())

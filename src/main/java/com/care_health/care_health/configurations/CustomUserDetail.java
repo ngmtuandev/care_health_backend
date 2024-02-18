@@ -46,7 +46,7 @@ public class CustomUserDetail implements UserDetails {
         List<GrantedAuthority> listAuthoritys = user.getListRoles().stream()
                 .map(roleItem -> new SimpleGrantedAuthority(roleItem.getRoleName().name()))
                 .collect(Collectors.toList());
-
+        System.out.println("listAuthoritys" + listAuthoritys);
         // return a customer user detail
         return new CustomUserDetail(
                 user.getUserName(),

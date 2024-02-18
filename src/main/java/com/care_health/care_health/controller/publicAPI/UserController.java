@@ -17,8 +17,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(
+        origins = {
+                "http://localhost:3000"
+        },
+        methods = {
+                RequestMethod.OPTIONS,
+                RequestMethod.GET,
+                RequestMethod.PUT,
+                RequestMethod.DELETE,
+                RequestMethod.POST
+        })
 @RestController
 @RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + UserConstant.API_USER)
+
 public class UserController {
 
     @Autowired

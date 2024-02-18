@@ -42,7 +42,7 @@ public class UserControllerPrivate {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_DELETE_USER)
     public ResponseEntity<UserResponse> deleteUser(@PathVariable String username) {
         System.out.println("Delete user");
@@ -51,7 +51,7 @@ public class UserControllerPrivate {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(UserConstant.API_LIST_USER)
     public ResponseEntity<UserResponse> getAlllUser() {
         System.out.println("get all user");

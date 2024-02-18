@@ -335,7 +335,14 @@ public class UserServiceImpl implements IUserService {
 
         if (user != null) {
             System.out.println("find user successfully");
-            usersRepo.deleteById(user.getId());
+            if (user.isUserStatus()) {
+                user.setUserStatus(false);
+                usersRepo.save(user);
+            }
+            else {
+                user.setUserStatus(true);
+                usersRepo.save(user);
+            }
             return UserResponse.builder()
                     .code(ResourceBundleConstant.USR_013)
                     .status(SystemConstant.STATUS_CODE_SUCCESS)

@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,7 @@ import java.io.IOException;
 @Slf4j
 @Data
 @Service
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class JwtAuthenticationsFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -45,6 +48,15 @@ public class JwtAuthenticationsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        /* Config error cors */
+
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, x-customer-header-1, x-customer-header-2, Authorization");
+
+
         try {
 
             // get jwt from request
@@ -57,7 +69,7 @@ public class JwtAuthenticationsFilter extends OncePerRequestFilter {
                 // get info detail of user current (all info)
                 // security just work with UserDetails
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(userNameCurrent);
-
+                System.out.println("jwt authentication filter ----> ");
                 if (userDetails != null) {
 
                     // SUCCESS => set info user for security and provider all role user -> provider for context security
@@ -71,6 +83,8 @@ public class JwtAuthenticationsFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 }
+
+                System.out.println("set password success");
 
             }
 

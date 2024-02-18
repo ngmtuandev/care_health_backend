@@ -29,7 +29,7 @@ public class RoleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(RoleConstant.API_GET_ROLES)
     public ResponseEntity<RoleResponse> getAllRole() {
 
