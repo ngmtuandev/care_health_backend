@@ -18,7 +18,7 @@ public class ContactFindRoom extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ContactFindRoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "UserName", nullable = false)

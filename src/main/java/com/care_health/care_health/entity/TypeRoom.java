@@ -19,16 +19,15 @@ public class TypeRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "TypeRoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Name", nullable = false)
     private ETypeRoom name;
 
     @Column(name = "Description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "typeRoom")
-    private List<Room> rooms;
 
 }

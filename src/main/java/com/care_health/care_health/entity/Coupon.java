@@ -18,7 +18,7 @@ public class Coupon extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "CouponID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "DayStart", nullable = false)

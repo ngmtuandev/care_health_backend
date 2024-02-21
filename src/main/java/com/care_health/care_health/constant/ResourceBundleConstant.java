@@ -45,6 +45,37 @@ public class ResourceBundleConstant {
     public static final String ROL_008 = "ROL_008";
     public static final String ROL_009 = "ROL_009";
 
+    // Room
+    public static final String ROM_001 = "ROM_001";
+    public static final String ROM_002 = "ROM_002";
+    public static final String ROM_003 = "ROM_003";
+    public static final String ROM_004 = "ROM_004";
+    public static final String ROM_005 = "ROM_005";
+    public static final String ROM_006 = "ROM_006";
+    public static final String ROM_007 = "ROM_007";
+    public static final String ROM_008 = "ROM_008";
+    public static final String ROM_009 = "ROM_009";
+    public static final String ROM_010 = "ROM_010";
 
+    // TypeRoom
+    public static final String TYPEROOM_001 = "TYPEROOM_001";
+    public static final String TYPEROOM_002 = "TYPEROOM_002";
+    public static final String TYPEROOM_003 = "TYPEROOM_003";
+    public static final String TYPEROOM_004 = "TYPEROOM_004";
+    public static final String TYPEROOM_005 = "TYPEROOM_005";
+    public static final String TYPEROOM_006 = "TYPEROOM_006";
+    public static final String TYPEROOM_007 = "TYPEROOM_007";
+
+    // Facilities
+    public static final String FACILITIES_001 = "FACILITIES_001";
+    public static final String FACILITIES_002 = "FACILITIES_002";
+    public static final String FACILITIES_003 = "FACILITIES_003";
+    public static final String FACILITIES_004 = "FACILITIES_004";
+    public static final String FACILITIES_005 = "FACILITIES_005";
+    public static final String FACILITIES_006 = "FACILITIES_006";
+    public static final String FACILITIES_007 = "FACILITIES_007";
+    public static final String FACILITIES_008 = "FACILITIES_008";
+    public static final String FACILITIES_009 = "FACILITIES_009";
+    public static final String FACILITIES_010 = "FACILITIES_010";
 
 }

@@ -17,7 +17,7 @@ public class Roles extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "RoleID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "RoleName")

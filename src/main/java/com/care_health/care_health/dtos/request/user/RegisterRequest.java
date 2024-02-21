@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Data
-public class RegisterRequestDTO {
+public class RegisterRequest {
 
     private String userName;
 

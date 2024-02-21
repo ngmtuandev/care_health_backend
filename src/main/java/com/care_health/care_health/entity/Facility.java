@@ -18,7 +18,7 @@ public class Facility extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "FacilityID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "NameFacility", nullable = false)

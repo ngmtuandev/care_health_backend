@@ -2,10 +2,8 @@ package com.care_health.care_health.controller.privateAPI;
 
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.constant.UserConstant;
-import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
+import com.care_health.care_health.dtos.request.role.RoleRequest;
 import com.care_health.care_health.dtos.response.user.UserResponse;
-import com.care_health.care_health.entity.Roles;
-import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.services.ImplService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +22,7 @@ public class UserControllerPrivate {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_ADD_ROLE)
-    public ResponseEntity<UserResponse> addRoleForUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
+    public ResponseEntity<UserResponse> addRoleForUser(@PathVariable UUID id, @RequestBody RoleRequest roles) {
 
         UserResponse result = userService.addRoleForUser(id, roles);
 
@@ -33,7 +31,7 @@ public class UserControllerPrivate {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(UserConstant.API_DELETE_ROLE)
-    public ResponseEntity<UserResponse> deleteRoleOfUser(@PathVariable UUID id, @RequestBody RoleRequestDTO roles) {
+    public ResponseEntity<UserResponse> deleteRoleOfUser(@PathVariable UUID id, @RequestBody RoleRequest roles) {
 
         System.out.println("edit delete role");
 

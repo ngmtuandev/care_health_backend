@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Room extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "RoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "Price", nullable = false)
@@ -44,9 +44,6 @@ public class Room extends BaseEntity {
 
     @Column(name = "LeaseTerm", nullable = false)
     private int leaseTerm;
-
-    @OneToOne(mappedBy = "room")
-    private ContactSeeRoom contactSeeRoom;
 
     @OneToOne(mappedBy = "room")
     private ConvenientNearArea convenientNearArea;

@@ -17,15 +17,13 @@ public class ContactSeeRoom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ContactSeeRoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "UserName", nullable = false)
     private String userName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    private UUID room;
 
     @Column(name = "PhoneNumber", nullable = false)
     private int phoneNumber;

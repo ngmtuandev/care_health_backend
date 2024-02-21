@@ -17,7 +17,7 @@ import java.util.UUID;
 public class StatusRoom extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "StatusRoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "NameStatus", nullable = false)

@@ -2,11 +2,9 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
-import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
+import com.care_health.care_health.dtos.request.role.RoleRequest;
 import com.care_health.care_health.dtos.response.role.RoleResponse;
-import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
-import com.care_health.care_health.entity.User;
 import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.repositories.IRoleRepo;
 import com.care_health.care_health.repositories.IUsersRepo;
@@ -42,7 +40,7 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public RoleResponse createRole(RoleRequestDTO role) {
+    public RoleResponse createRole(RoleRequest role) {
 
         Optional<Roles> findRole = findByRoleName(role.getRoleName());
 

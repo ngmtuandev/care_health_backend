@@ -16,7 +16,7 @@ public class ImageRoom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ImageRoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "FilePath", nullable = false)

@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RoleRequestDTO {
+public class RoleRequest {
     private ERole roleName;
 }

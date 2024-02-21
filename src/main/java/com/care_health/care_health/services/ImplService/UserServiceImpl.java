@@ -4,10 +4,10 @@ import com.care_health.care_health.configurations.CustomUserDetail;
 import com.care_health.care_health.configurations.JwtProvider;
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
-import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
-import com.care_health.care_health.dtos.request.user.EmailRequestDTO;
-import com.care_health.care_health.dtos.request.user.LoginRequestDTO;
-import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
+import com.care_health.care_health.dtos.request.role.RoleRequest;
+import com.care_health.care_health.dtos.request.user.EmailRequest;
+import com.care_health.care_health.dtos.request.user.LoginRequest;
+import com.care_health.care_health.dtos.request.user.RegisterRequest;
 import com.care_health.care_health.dtos.response.user.UserProfileDTO;
 import com.care_health.care_health.dtos.response.user.UserResponse;
 import com.care_health.care_health.entity.Roles;
@@ -26,7 +26,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,7 +83,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse register(RegisterRequestDTO request) {
+    public UserResponse register(RegisterRequest request) {
 
         if (existsByUserName(request.getUserName())) {
             return UserResponse.builder()
@@ -165,7 +164,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse login(LoginRequestDTO requestLogin) {
+    public UserResponse login(LoginRequest requestLogin) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestLogin.getUserName(), requestLogin.getPassword()));
@@ -192,7 +191,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse addRoleForUser(UUID idUser, RoleRequestDTO roleName) {
+    public UserResponse addRoleForUser(UUID idUser, RoleRequest roleName) {
 
         Optional<User> findUser = usersRepo.findById(idUser);
 
@@ -241,7 +240,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse resetPassword(EmailRequestDTO email) {
+    public UserResponse resetPassword(EmailRequest email) {
         User user = findByEmail(email.getEmail());
         if (user != null) {
             String newPassword = GenerateRandomPassword.generateRandomPassword(8);
@@ -268,7 +267,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse deleteRoleOfUser(UUID idUser, RoleRequestDTO roleName) {
+    public UserResponse deleteRoleOfUser(UUID idUser, RoleRequest roleName) {
         Optional<User> userOpt = usersRepo.findById(idUser);
         User user = userOpt.get();
         if (userOpt.isPresent()) {

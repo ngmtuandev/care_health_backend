@@ -2,10 +2,8 @@ package com.care_health.care_health.controller.privateAPI;
 
 import com.care_health.care_health.constant.RoleConstant;
 import com.care_health.care_health.constant.SystemConstant;
-import com.care_health.care_health.dtos.request.role.RoleRequestDTO;
-import com.care_health.care_health.dtos.request.user.RegisterRequestDTO;
+import com.care_health.care_health.dtos.request.role.RoleRequest;
 import com.care_health.care_health.dtos.response.role.RoleResponse;
-import com.care_health.care_health.enums.ERole;
 import com.care_health.care_health.services.ImplService.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,7 @@ public class RoleController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<RoleResponse> registerCreateRole(@RequestBody RoleRequestDTO role) {
+    public ResponseEntity<RoleResponse> registerCreateRole(@RequestBody RoleRequest role) {
 
         RoleResponse result =roleService.createRole(role);
 

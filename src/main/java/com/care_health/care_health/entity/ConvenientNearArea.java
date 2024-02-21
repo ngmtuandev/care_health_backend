@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ConvenientNearArea extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "RoomID", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "Distance", nullable = false)
