@@ -22,7 +22,7 @@ public class Facility extends BaseEntity{
     private UUID id;
 
     @Column(name = "NameFacility", nullable = false)
-    private int nameFacility;
+    private String nameFacility;
 
     @Column(name = "Surcharge", nullable = false)
     private double surcharge;
@@ -33,4 +33,11 @@ public class Facility extends BaseEntity{
     @ManyToMany(mappedBy = "facilities")
     private Set<Room> rooms = new HashSet<>();
 
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
 }

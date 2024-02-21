@@ -1,6 +1,7 @@
 package com.care_health.care_health.dtos;
 
 import com.care_health.care_health.entity.*;
+import com.care_health.care_health.enums.EStatusRoom;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class RoomDTO {
 
     private String description;
 
-    private String userName;
+    private String title;
 
     private Double stakeMoney;
 
@@ -44,6 +45,6 @@ public class RoomDTO {
 
     private TypeRoom typeRoom;
 
-    private StatusRoom statusRoom;
+    private EStatusRoom statusRoom;
 
 }

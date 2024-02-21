@@ -18,7 +18,7 @@ public class RoleController {
     @Autowired
     RoleServiceImpl roleService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<RoleResponse> registerCreateRole(@RequestBody RoleRequest role) {
 

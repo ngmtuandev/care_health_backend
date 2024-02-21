@@ -21,6 +21,4 @@ public class CouponDTO {
 
     private int percentCoupon;
 
-    private List<Room> rooms;
-
 }

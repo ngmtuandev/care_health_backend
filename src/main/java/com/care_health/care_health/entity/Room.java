@@ -1,7 +1,9 @@
 package com.care_health.care_health.entity;
 
+import com.care_health.care_health.enums.EStatusRoom;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 @Table(name = "_room")
 @Data
 @Entity
@@ -30,8 +33,8 @@ public class Room extends BaseEntity {
     @Column(name = "Description", nullable = false)
     private String description;
 
-    @Column(name = "UserName", nullable = false)
-    private String userName;
+    @Column(name = "Title", nullable = false)
+    private String title;
 
     @Column(name = "StakeMoney", nullable = false)
     private Double stakeMoney;
@@ -67,8 +70,6 @@ public class Room extends BaseEntity {
     @JoinColumn(name = "typeRoom_id")
     private TypeRoom typeRoom;
 
-    @ManyToOne
-    @JoinColumn(name = "statusRoom_id")
-    private StatusRoom statusRoom;
+    private EStatusRoom statusRoom;
 
 }

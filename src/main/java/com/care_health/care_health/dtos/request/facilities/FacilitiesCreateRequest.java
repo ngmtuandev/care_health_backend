@@ -1,4 +1,4 @@
-package com.care_health.care_health.dtos;
+package com.care_health.care_health.dtos.request.facilities;
 
 import com.care_health.care_health.entity.Room;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Data
-public class FacilityDTO {
+public class FacilitiesCreateRequest {
 
     private String nameFacility;
 

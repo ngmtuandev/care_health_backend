@@ -23,7 +23,7 @@ public class RoomCreateRequest {
 
     private String description;
 
-    private String userName;
+    private String title;
 
     private Double stakeMoney;
 
@@ -39,7 +39,7 @@ public class RoomCreateRequest {
 
     private List<UUID> facilities;
 
-    private CouponDTO coupon;
+    private UUID coupon;
 
     private UUID typeRoom;
 

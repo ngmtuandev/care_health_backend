@@ -78,4 +78,16 @@ public class ResourceBundleConstant {
     public static final String FACILITIES_009 = "FACILITIES_009";
     public static final String FACILITIES_010 = "FACILITIES_010";
 
+    // Coupon
+    public static final String COUPON_001 = "COUPON_001";
+    public static final String COUPON_002 = "COUPON_002";
+    public static final String COUPON_003 = "COUPON_003";
+    public static final String COUPON_004 = "COUPON_004";
+    public static final String COUPON_005 = "COUPON_005";
+    public static final String COUPON_006 = "COUPON_006";
+    public static final String COUPON_007 = "COUPON_007";
+    public static final String COUPON_008 = "COUPON_008";
+    public static final String COUPON_009 = "COUPON_009";
+    public static final String COUPON_010 = "COUPON_010";
+
 }
