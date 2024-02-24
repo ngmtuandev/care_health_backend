@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + UserConstant.API_USER)
 
-public class UserController {
+public class UserPublicController {
 
     @Autowired
     UserServiceImpl userService;
@@ -52,8 +52,7 @@ public class UserController {
 
     @GetMapping(UserConstant.API_GET_PROFILE)
     public ResponseEntity<UserResponse> getProfile(@RequestHeader("Authorization") String token) {
-        System.out.println("get profile");
-        System.out.println("String token ->>>>>>>" + token);
+
         UserResponse result = userService.getUserProfile(token);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

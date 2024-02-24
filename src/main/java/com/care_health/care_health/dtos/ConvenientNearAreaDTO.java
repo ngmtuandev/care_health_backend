@@ -14,7 +14,7 @@ public class ConvenientNearAreaDTO {
 
     private int distance;
 
-    private Date name;
+    private String name;
 
     private Room room;
 

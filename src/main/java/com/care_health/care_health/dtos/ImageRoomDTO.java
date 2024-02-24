@@ -13,8 +13,6 @@ public class ImageRoomDTO {
 
     private String filePath;
 
-    private Room room;
-
     private TypeImage typeImage;
 
 }

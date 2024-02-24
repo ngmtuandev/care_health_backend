@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,11 @@ public class ImageRoomServiceImpl implements IImageRoomService {
 
     private String getMessageBundle(String key) {
         return baseAmenityUtil.getMessageBundle(key);
+    }
+
+    @Override
+    public List<ImageRoom> findImageByRoomId(UUID roomId) {
+        return imageRoomRepo.findByRoomId(roomId);
     }
 
     @Override
@@ -86,6 +92,48 @@ public class ImageRoomServiceImpl implements IImageRoomService {
 
     @Override
     public ListImageRoomResponse getListImageOfRoom(UUID roomID) {
-        return null;
+        List<ImageRoom> listImageOfRoom = findImageByRoomId(roomID);
+
+        List<String> imageUrls = listImageOfRoom.stream().map(ImageRoom::getFilePath).collect(Collectors.toList());
+
+        if (listImageOfRoom != null) {
+            return ListImageRoomResponse.builder()
+                    .code(ResourceBundleConstant.IMGROOM_008)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .data(imageUrls)
+                    .message(getMessageBundle(ResourceBundleConstant.IMGROOM_008))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
+        }
+        return ListImageRoomResponse.builder()
+                .code(ResourceBundleConstant.IMGROOM_009)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.IMGROOM_009))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public ListImageRoomResponse findImageByRoomIdAndTypeImageId(UUID roomId, UUID typeImageId) {
+
+        List<ImageRoom> imageRoomOfTypeImage = imageRoomRepo.findImageByRoomIdAndTypeImageId(roomId, typeImageId);
+
+        List<String> imageUrls = imageRoomOfTypeImage.stream().map(ImageRoom::getFilePath).collect(Collectors.toList());
+
+        if (imageRoomOfTypeImage != null) {
+            return ListImageRoomResponse.builder()
+                    .code(ResourceBundleConstant.IMGROOM_010)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .message(getMessageBundle(ResourceBundleConstant.IMGROOM_010))
+                    .data(imageUrls)
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
+        }
+        return ListImageRoomResponse.builder()
+                .code(ResourceBundleConstant.IMGROOM_011)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.IMGROOM_011))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 }

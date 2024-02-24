@@ -23,7 +23,7 @@ public class ConvenientNearArea extends BaseEntity{
     private int distance;
 
     @Column(name = "Name", nullable = false)
-    private Date name;
+    private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")

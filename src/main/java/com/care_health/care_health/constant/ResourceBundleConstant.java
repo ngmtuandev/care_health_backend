@@ -113,5 +113,6 @@ public class ResourceBundleConstant {
     public static final String IMGROOM_008 = "IMGROOM_008";
     public static final String IMGROOM_009 = "IMGROOM_009";
     public static final String IMGROOM_010 = "IMGROOM_010";
+    public static final String IMGROOM_011 = "IMGROOM_010";
 
 }
