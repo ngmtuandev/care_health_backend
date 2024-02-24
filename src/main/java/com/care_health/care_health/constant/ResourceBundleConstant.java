@@ -90,4 +90,28 @@ public class ResourceBundleConstant {
     public static final String COUPON_009 = "COUPON_009";
     public static final String COUPON_010 = "COUPON_010";
 
+    // Type Image
+    public static final String TYPEIMG_001 = "TYPEIMG_001";
+    public static final String TYPEIMG_002 = "TYPEIMG_002";
+    public static final String TYPEIMG_003 = "TYPEIMG_003";
+    public static final String TYPEIMG_004 = "TYPEIMG_004";
+    public static final String TYPEIMG_005 = "TYPEIMG_005";
+    public static final String TYPEIMG_006 = "TYPEIMG_006";
+    public static final String TYPEIMG_007 = "TYPEIMG_007";
+    public static final String TYPEIMG_008 = "TYPEIMG_008";
+    public static final String TYPEIMG_009 = "TYPEIMG_009";
+
+
+    // Image Room
+    public static final String IMGROOM_001 = "IMGROOM_001";
+    public static final String IMGROOM_002 = "IMGROOM_002";
+    public static final String IMGROOM_003 = "IMGROOM_003";
+    public static final String IMGROOM_004 = "IMGROOM_004";
+    public static final String IMGROOM_005 = "IMGROOM_005";
+    public static final String IMGROOM_006 = "IMGROOM_006";
+    public static final String IMGROOM_007 = "IMGROOM_007";
+    public static final String IMGROOM_008 = "IMGROOM_008";
+    public static final String IMGROOM_009 = "IMGROOM_009";
+    public static final String IMGROOM_010 = "IMGROOM_010";
+
 }

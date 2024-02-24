@@ -101,7 +101,7 @@ public class WebSecurityConfig  {
                         .requestMatchers(anyAuthorityAdminApis).permitAll()
                         .requestMatchers("http://localhost:1001/care-health/api/v1/public/user/login").permitAll()
                         .anyRequest()
-                        .authenticated())
+                        .permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationsFilter, UsernamePasswordAuthenticationFilter.class);
 

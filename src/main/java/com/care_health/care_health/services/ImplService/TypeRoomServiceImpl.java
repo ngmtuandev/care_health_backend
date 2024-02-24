@@ -35,7 +35,6 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
     public TypeRoomResponse createTypeRoom(TypeRoomCreateRequest typeRoomCreateRequest) {
 
         TypeRoom findTypeRoom = findByName(typeRoomCreateRequest.getName());
-        System.out.println("findTypeRoom" + findTypeRoom);
         if (findTypeRoom != null) {
             return TypeRoomResponse.builder()
                     .code(ResourceBundleConstant.TYPEROOM_007)

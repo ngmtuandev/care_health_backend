@@ -22,6 +22,7 @@ public class TypeImage extends BaseEntity{
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Name", nullable = false)
     private ETypeImage name;
 
