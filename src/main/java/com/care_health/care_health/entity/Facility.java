@@ -1,5 +1,6 @@
 package com.care_health.care_health.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +31,8 @@ public class Facility extends BaseEntity{
     @Column(name = "IsNew", nullable = false)
     private boolean isNew;
 
-    @ManyToMany(mappedBy = "facilities")
+    @ManyToMany(mappedBy = "facilities", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public void setNew(boolean isNew) {

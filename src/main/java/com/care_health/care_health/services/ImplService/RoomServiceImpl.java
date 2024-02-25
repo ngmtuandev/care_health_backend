@@ -12,6 +12,8 @@ import com.care_health.care_health.services.IServices.IRoomService;
 import com.care_health.care_health.utils.BaseAmenityUtil;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -100,8 +102,69 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public List<RoomResponse> getAllRoomd() {
-        return null;
+    public RoomResponse getAllRooms(Integer page, Integer size) {
+
+        List<RoomDetailResponse> listRooms = new ArrayList<>();
+
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Room> rooms= roomRepo.findAll(pageable);
+
+        int totalPages = rooms.getTotalPages();
+
+        if (!rooms.isEmpty()) {
+            rooms.stream().forEach(item -> {
+                RoomDetailResponse responseRoom = RoomDetailResponse.builder()
+                        .id(item.getId())
+                        .price(item.getPrice())
+                        .numberPerson(item.getNumberPerson())
+                        .description(item.getDescription())
+                        .title(item.getTitle())
+                        .stakeMoney(item.getStakeMoney())
+                        .location(item.getLocation())
+                        .district(item.getDistrict())
+                        .leaseTerm(item.getLeaseTerm())
+                        .statusRoom(item.getStatusRoom())
+                        .build();
+                if (responseRoom != null) {
+                    Optional<Coupon> coupon = couponRepo.findById(item.getCoupon().getId());
+                    if (item.getCoupon() != null) {
+                        Coupon couponOptional = couponRepo.findById(item.getCoupon().getId())
+                                .orElse(null);
+                        responseRoom.setCoupon(couponOptional);
+                    }
+                    if (item.getFacilities() != null) {
+                        responseRoom.setFacilities(item.getFacilities());
+                    }
+                    if (item.getConvenientNearArea() != null) {
+                        ConvenientNearArea convenientNearArea = convenientNearAreaRepo.findById(item.getConvenientNearArea().getId())
+                                .orElse(null);
+                        responseRoom.setConvenientNearArea(convenientNearArea);
+                    }
+                    if (item.getTypeRoom() != null) {
+                        TypeRoom typeRoom = typeRoomRepo.findById(item.getTypeRoom().getId())
+                                .orElse(null);
+                        responseRoom.setTypeRoom(typeRoom);
+                    }
+                }
+                listRooms.add(responseRoom);
+            });
+            return RoomResponse.builder()
+                    .code(ResourceBundleConstant.ROM_008)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .message(getMessageBundle(ResourceBundleConstant.ROM_008))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .data(listRooms)
+                    .totalPages(totalPages)
+                    .build();
+        }
+
+        return RoomResponse.builder()
+                .code(ResourceBundleConstant.ROM_005)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.ROM_005))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .data(listRooms)
+                .build();
     }
 
     @Override
@@ -120,7 +183,6 @@ public class RoomServiceImpl implements IRoomService {
                 .location(findRoom.getLocation())
                 .district(findRoom.getDistrict())
                 .leaseTerm(findRoom.getLeaseTerm())
-//                .facilities(findRoom.getFacilities())
                 .statusRoom(findRoom.getStatusRoom())
                 .build();
         if (responseRoom != null) {
@@ -130,9 +192,9 @@ public class RoomServiceImpl implements IRoomService {
                         .orElse(null);
                 responseRoom.setCoupon(couponOptional);
             }
-//            if (findRoom.getFacilities() != null) {
-//                System.out.println("getFacilities:" + findRoom.getFacilities());
-//            }
+            if (findRoom.getFacilities() != null) {
+                responseRoom.setFacilities(findRoom.getFacilities());
+            }
             if (findRoom.getConvenientNearArea() != null) {
                 ConvenientNearArea convenientNearArea = convenientNearAreaRepo.findById(findRoom.getConvenientNearArea().getId())
                         .orElse(null);

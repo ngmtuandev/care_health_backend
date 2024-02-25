@@ -11,7 +11,7 @@ public interface IRoomService {
 
     RoomResponse createRoom(RoomCreateRequest roomCreateRequest);
 
-    List<RoomResponse> getAllRoomd();
+    RoomResponse getAllRooms(Integer page, Integer size);
 
     RoomResponse getItemRoomId(UUID roomId);
 

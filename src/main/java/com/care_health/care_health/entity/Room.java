@@ -1,6 +1,7 @@
 package com.care_health.care_health.entity;
 
 import com.care_health.care_health.enums.EStatusRoom;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Table(name = "_room")
-@Data
 @Entity
 public class Room extends BaseEntity {
     @Id
@@ -54,12 +54,13 @@ public class Room extends BaseEntity {
     @OneToMany(mappedBy = "room")
     private List<ImageRoom> imageRooms;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "room_facility",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
+    @JsonIgnore
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToOne

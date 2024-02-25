@@ -27,4 +27,14 @@ public class RoomPublicController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(RoomConstant.API_GET_ROOMS)
+    public ResponseEntity<RoomResponse> getAllRooms(@RequestParam(defaultValue = "0") Integer page,
+                                                    @RequestParam(defaultValue = "10") Integer size) {
+
+        RoomResponse result = roomService.getAllRooms(page, size);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }
