@@ -4,15 +4,18 @@ import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.room.RoomCreateRequest;
 import com.care_health.care_health.dtos.response.facilities.FacilitiesResponse;
+import com.care_health.care_health.dtos.response.room.RoomDetailResponse;
 import com.care_health.care_health.dtos.response.room.RoomResponse;
 import com.care_health.care_health.entity.*;
 import com.care_health.care_health.repositories.*;
 import com.care_health.care_health.services.IServices.IRoomService;
 import com.care_health.care_health.utils.BaseAmenityUtil;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +96,61 @@ public class RoomServiceImpl implements IRoomService {
                 .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
                 .message(getMessageBundle(ResourceBundleConstant.ROM_002))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public List<RoomResponse> getAllRoomd() {
+        return null;
+    }
+
+    @Override
+    public RoomResponse getItemRoomId(UUID roomId) {
+
+        Room findRoom = roomRepo.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room Not Found"));
+
+        RoomDetailResponse responseRoom = RoomDetailResponse.builder()
+                .id(findRoom.getId())
+                .price(findRoom.getPrice())
+                .numberPerson(findRoom.getNumberPerson())
+                .description(findRoom.getDescription())
+                .title(findRoom.getTitle())
+                .stakeMoney(findRoom.getStakeMoney())
+                .location(findRoom.getLocation())
+                .district(findRoom.getDistrict())
+                .leaseTerm(findRoom.getLeaseTerm())
+//                .facilities(findRoom.getFacilities())
+                .statusRoom(findRoom.getStatusRoom())
+                .build();
+        if (responseRoom != null) {
+            Optional<Coupon> coupon = couponRepo.findById(findRoom.getCoupon().getId());
+            if (findRoom.getCoupon() != null) {
+                Coupon couponOptional = couponRepo.findById(findRoom.getCoupon().getId())
+                        .orElse(null);
+                responseRoom.setCoupon(couponOptional);
+            }
+//            if (findRoom.getFacilities() != null) {
+//                System.out.println("getFacilities:" + findRoom.getFacilities());
+//            }
+            if (findRoom.getConvenientNearArea() != null) {
+                ConvenientNearArea convenientNearArea = convenientNearAreaRepo.findById(findRoom.getConvenientNearArea().getId())
+                        .orElse(null);
+                responseRoom.setConvenientNearArea(convenientNearArea);
+            }
+            if (findRoom.getTypeRoom() != null) {
+                TypeRoom typeRoom = typeRoomRepo.findById(findRoom.getTypeRoom().getId())
+                        .orElse(null);
+                responseRoom.setTypeRoom(typeRoom);
+            }
+        }
+
+        return RoomResponse.builder()
+                .code(ResourceBundleConstant.ROM_007)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.ROM_007))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .data(responseRoom)
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.care_health.care_health.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class ConvenientNearArea extends BaseEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
+    @JsonIgnore
     private Room room;
 
 }

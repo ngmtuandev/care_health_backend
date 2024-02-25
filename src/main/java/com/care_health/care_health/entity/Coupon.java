@@ -1,5 +1,6 @@
 package com.care_health.care_health.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -33,6 +34,7 @@ public class Coupon extends BaseEntity{
     private int percentCoupon;
 
     @OneToMany(mappedBy = "coupon")
+    @JsonIgnore
     private List<Room> rooms;
 
 }
