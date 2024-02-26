@@ -2,8 +2,10 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
+import com.care_health.care_health.dtos.request.room.ConditionFindRoom;
 import com.care_health.care_health.dtos.request.room.RoomCreateRequest;
 import com.care_health.care_health.dtos.response.facilities.FacilitiesResponse;
+import com.care_health.care_health.dtos.response.imageRoom.ListImageRoomResponse;
 import com.care_health.care_health.dtos.response.room.RoomDetailResponse;
 import com.care_health.care_health.dtos.response.room.RoomResponse;
 import com.care_health.care_health.entity.*;
@@ -34,11 +36,20 @@ public class RoomServiceImpl implements IRoomService {
 
     final private ICouponRepo couponRepo;
 
+    final private IImageRoomRepo imageRoomRepo;
+
     private final BaseAmenityUtil baseAmenityUtil;
 
     private String getMessageBundle(String key) {
         return baseAmenityUtil.getMessageBundle(key);
     }
+
+
+    @Override
+    public List<ImageRoom> findImageByRoomId(UUID roomId) {
+        return imageRoomRepo.findByRoomId(roomId);
+    }
+
 
     @Override
     public RoomResponse createRoom(RoomCreateRequest roomCreateRequest) {
@@ -113,6 +124,10 @@ public class RoomServiceImpl implements IRoomService {
 
         if (!rooms.isEmpty()) {
             rooms.stream().forEach(item -> {
+
+                List<ImageRoom> listImageOfRoom = findImageByRoomId(item.getId());
+                List<String> imageUrls = listImageOfRoom.stream().map(ImageRoom::getFilePath).collect(Collectors.toList());
+
                 RoomDetailResponse responseRoom = RoomDetailResponse.builder()
                         .id(item.getId())
                         .price(item.getPrice())
@@ -124,6 +139,7 @@ public class RoomServiceImpl implements IRoomService {
                         .district(item.getDistrict())
                         .leaseTerm(item.getLeaseTerm())
                         .statusRoom(item.getStatusRoom())
+                        .images(imageUrls)
                         .build();
                 if (responseRoom != null) {
                     Optional<Coupon> coupon = couponRepo.findById(item.getCoupon().getId());
@@ -173,6 +189,11 @@ public class RoomServiceImpl implements IRoomService {
         Room findRoom = roomRepo.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room Not Found"));
 
+        List<ImageRoom> listImageOfRoom = findImageByRoomId(roomId);
+
+        List<String> imageUrls = listImageOfRoom.stream().map(ImageRoom::getFilePath).collect(Collectors.toList());
+
+
         RoomDetailResponse responseRoom = RoomDetailResponse.builder()
                 .id(findRoom.getId())
                 .price(findRoom.getPrice())
@@ -184,6 +205,7 @@ public class RoomServiceImpl implements IRoomService {
                 .district(findRoom.getDistrict())
                 .leaseTerm(findRoom.getLeaseTerm())
                 .statusRoom(findRoom.getStatusRoom())
+                .images(imageUrls)
                 .build();
         if (responseRoom != null) {
             Optional<Coupon> coupon = couponRepo.findById(findRoom.getCoupon().getId());
@@ -215,4 +237,71 @@ public class RoomServiceImpl implements IRoomService {
                 .data(responseRoom)
                 .build();
     }
+
+    @Override
+    public RoomResponse findRoomByCondition(ConditionFindRoom conditionFindRoom) {
+        System.out.println("roomByConditions Start");
+        List<Room> roomByConditions = roomRepo.roomsByCondition(conditionFindRoom);
+
+        List<RoomDetailResponse> responseRooms = roomByConditions.stream()
+                .map(room -> buildRoomDetailResponseWithImages(room))
+                .collect(Collectors.toList());
+
+        if (!roomByConditions.isEmpty()) {
+            return RoomResponse.builder()
+                    .code(ResourceBundleConstant.ROM_008)
+                    .status(SystemConstant.STATUS_CODE_SUCCESS)
+                    .message(getMessageBundle(ResourceBundleConstant.ROM_008))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .data(responseRooms)
+                    .build();
+        }
+        return RoomResponse.builder()
+                .code(ResourceBundleConstant.ROM_010)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.ROM_010))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    private RoomDetailResponse buildRoomDetailResponseWithImages(Room room) {
+        List<ImageRoom> listImageOfRoom = findImageByRoomId(room.getId());
+        List<String> imageUrls = listImageOfRoom.stream().map(ImageRoom::getFilePath).collect(Collectors.toList());
+
+        RoomDetailResponse responseRoom = RoomDetailResponse.builder()
+                .id(room.getId())
+                .price(room.getPrice())
+                .numberPerson(room.getNumberPerson())
+                .description(room.getDescription())
+                .title(room.getTitle())
+                .stakeMoney(room.getStakeMoney())
+                .location(room.getLocation())
+                .district(room.getDistrict())
+                .leaseTerm(room.getLeaseTerm())
+                .statusRoom(room.getStatusRoom())
+                .images(imageUrls)
+                .build();
+
+        // Set other details like coupon, facilities, convenientNearArea, and typeRoom as before
+        if (responseRoom != null) {
+            Optional<Coupon> coupon = couponRepo.findById(room.getCoupon().getId());
+            if (room.getCoupon() != null) {
+                Coupon couponOptional = couponRepo.findById(room.getCoupon().getId()).orElse(null);
+                responseRoom.setCoupon(couponOptional);
+            }
+            if (room.getFacilities() != null) {
+                responseRoom.setFacilities(room.getFacilities());
+            }
+            if (room.getConvenientNearArea() != null) {
+                ConvenientNearArea convenientNearArea = convenientNearAreaRepo.findById(room.getConvenientNearArea().getId()).orElse(null);
+                responseRoom.setConvenientNearArea(convenientNearArea);
+            }
+            if (room.getTypeRoom() != null) {
+                TypeRoom typeRoom = typeRoomRepo.findById(room.getTypeRoom().getId()).orElse(null);
+                responseRoom.setTypeRoom(typeRoom);
+            }
+        }
+        return responseRoom;
+    }
+
 }

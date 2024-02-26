@@ -3,6 +3,7 @@ package com.care_health.care_health.dtos.response.room;
 import com.care_health.care_health.dtos.response.base.BaseResponse;
 import com.care_health.care_health.entity.*;
 import com.care_health.care_health.enums.EStatusRoom;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
@@ -45,5 +47,7 @@ public class RoomDetailResponse extends BaseResponse {
     private TypeRoom typeRoom;
 
     private EStatusRoom statusRoom;
+
+    private List<String> images;
 
 }

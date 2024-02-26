@@ -1,6 +1,7 @@
 package com.care_health.care_health.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)

@@ -24,7 +24,6 @@ public class FacilitiesController {
     //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(FacilitiesConstant.API_CREATE_FACILITIES)
     public ResponseEntity<FacilitiesResponse> createNewFacilities(@RequestBody FacilitiesCreateRequest facilitiesCreateRequest) {
-        System.out.println("start create");
         FacilitiesResponse result = facilitiesService.createFacilities(facilitiesCreateRequest);
 
         return new ResponseEntity<>(result, HttpStatus.OK);

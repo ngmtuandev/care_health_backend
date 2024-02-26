@@ -49,9 +49,11 @@ public class Room extends BaseEntity {
     private int leaseTerm;
 
     @OneToOne(mappedBy = "room")
+    @JsonIgnore
     private ConvenientNearArea convenientNearArea;
 
     @OneToMany(mappedBy = "room")
+    @JsonIgnore
     private List<ImageRoom> imageRooms;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -65,10 +67,12 @@ public class Room extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "coupon_id")
+    @JsonIgnore
     private Coupon coupon;
 
     @ManyToOne
     @JoinColumn(name = "typeRoom_id")
+    @JsonIgnore
     private TypeRoom typeRoom;
 
     private EStatusRoom statusRoom;
