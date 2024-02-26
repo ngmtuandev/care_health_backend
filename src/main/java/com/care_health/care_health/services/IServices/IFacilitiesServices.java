@@ -7,4 +7,6 @@ public interface IFacilitiesServices {
 
     FacilitiesResponse createFacilities (FacilitiesCreateRequest facilitiesCreateRequest);
 
+    FacilitiesResponse getListFacilities();
+
 }

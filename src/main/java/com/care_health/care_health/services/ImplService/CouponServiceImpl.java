@@ -2,6 +2,7 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
+import com.care_health.care_health.dtos.CouponDTO;
 import com.care_health.care_health.dtos.request.coupon.CouponCreateRequest;
 import com.care_health.care_health.dtos.response.coupon.CouponResponse;
 import com.care_health.care_health.dtos.response.facilities.FacilitiesResponse;
@@ -11,6 +12,9 @@ import com.care_health.care_health.services.IServices.ICouponService;
 import com.care_health.care_health.utils.BaseAmenityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +54,30 @@ public class CouponServiceImpl implements ICouponService {
                 .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
                 .message(getMessageBundle(ResourceBundleConstant.COUPON_002))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public CouponResponse getAllCoupon() {
+
+        List<Coupon> coupons = couponRepo.findAll();
+        List<CouponDTO> couponDTOS = new ArrayList<>();
+        coupons.stream().forEach(item -> {
+            CouponDTO couponDTO = new CouponDTO();
+            couponDTO.setPercentCoupon(item.getPercentCoupon());
+            couponDTO.setDayEnd(item.getDayEnd());
+            couponDTO.setDayStart(item.getDayStart());
+
+            couponDTOS.add(couponDTO);
+
+        });
+
+        return CouponResponse.builder()
+                .code(ResourceBundleConstant.COUPON_010)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.COUPON_010))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .data(couponDTOS)
                 .build();
     }
 }

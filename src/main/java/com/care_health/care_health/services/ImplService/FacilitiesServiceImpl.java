@@ -2,6 +2,7 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
+import com.care_health.care_health.dtos.FacilityDTO;
 import com.care_health.care_health.dtos.request.facilities.FacilitiesCreateRequest;
 import com.care_health.care_health.dtos.response.facilities.FacilitiesResponse;
 import com.care_health.care_health.entity.Facility;
@@ -10,6 +11,9 @@ import com.care_health.care_health.services.IServices.IFacilitiesServices;
 import com.care_health.care_health.utils.BaseAmenityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +61,30 @@ public class FacilitiesServiceImpl implements IFacilitiesServices {
                 .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
                 .message(getMessageBundle(ResourceBundleConstant.FACILITIES_002))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public FacilitiesResponse getListFacilities() {
+
+        List<Facility> listFacilities = facilitiesRepo.findAll();
+        List<FacilityDTO> facilityDTOList = new ArrayList<>();
+        listFacilities.stream().forEach(item -> {
+            FacilityDTO facilityDTO = new FacilityDTO();
+            facilityDTO.setNameFacility(item.getNameFacility());
+            facilityDTO.setNew(item.isNew());
+            facilityDTO.setSurcharge(item.getSurcharge());
+
+            facilityDTOList.add(facilityDTO);
+
+        });
+
+        return FacilitiesResponse.builder()
+                .code(ResourceBundleConstant.FACILITIES_007)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.FACILITIES_007))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .data(facilityDTOList)
                 .build();
     }
 }

@@ -11,4 +11,6 @@ public interface ITypeImageService {
 
     TypeImageResponse newTypeImage(TypeImageRequest typeImageRequest);
 
+    TypeImageResponse getListTypeImage();
+
 }

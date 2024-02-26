@@ -2,6 +2,7 @@ package com.care_health.care_health.services.ImplService;
 
 import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
+import com.care_health.care_health.dtos.TypeImageDTO;
 import com.care_health.care_health.dtos.request.typeImage.TypeImageRequest;
 import com.care_health.care_health.dtos.response.TypeImage.TypeImageResponse;
 import com.care_health.care_health.entity.TypeImage;
@@ -11,6 +12,9 @@ import com.care_health.care_health.services.IServices.ITypeImageService;
 import com.care_health.care_health.utils.BaseAmenityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +65,35 @@ public class TypeImageServiceImpl implements ITypeImageService {
                 .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
                 .message(getMessageBundle(ResourceBundleConstant.TYPEIMG_002))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public TypeImageResponse getListTypeImage() {
+
+        List<TypeImage> listTypeImage = typeImageRepo.findAll();
+        List<TypeImageDTO> typeImages = new ArrayList<>();
+
+        listTypeImage.stream().forEach(item -> {
+            TypeImageDTO typeImageDTO = new TypeImageDTO();
+            typeImageDTO.setName(item.getName());
+            typeImages.add(typeImageDTO);
+        });
+        if (listTypeImage.isEmpty()) {
+            return TypeImageResponse.builder()
+                    .code(ResourceBundleConstant.TYPEIMG_008)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.TYPEIMG_008))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
+        }
+
+        return TypeImageResponse.builder()
+                .code(ResourceBundleConstant.TYPEIMG_004)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.TYPEIMG_004))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .data(typeImages)
                 .build();
     }
 }

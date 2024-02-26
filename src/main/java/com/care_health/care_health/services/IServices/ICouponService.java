@@ -7,4 +7,6 @@ public interface ICouponService {
 
     CouponResponse newCoupon(CouponCreateRequest couponCreateRequest);
 
+    CouponResponse getAllCoupon();
+
 }
