@@ -6,6 +6,7 @@ public class RoomConstant {
     public static final String API_GET_ITEM_ROOM = "/get-room/{roomId}";
     public static final String API_GET_ROOMS = "/get-list-room";
     public static final String API_FIND_ROOMS = "/get-find-room";
+    public static final String API_DELETE_ROOM = "/delete-room/{roomId}";
 
 
     public static final String MIN_PRICE = "minPrice";

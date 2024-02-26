@@ -9,6 +9,7 @@ import com.care_health.care_health.dtos.response.imageRoom.ListImageRoomResponse
 import com.care_health.care_health.dtos.response.room.RoomDetailResponse;
 import com.care_health.care_health.dtos.response.room.RoomResponse;
 import com.care_health.care_health.entity.*;
+import com.care_health.care_health.enums.EStatusRoom;
 import com.care_health.care_health.repositories.*;
 import com.care_health.care_health.services.IServices.IRoomService;
 import com.care_health.care_health.utils.BaseAmenityUtil;
@@ -48,6 +49,23 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public List<ImageRoom> findImageByRoomId(UUID roomId) {
         return imageRoomRepo.findByRoomId(roomId);
+    }
+
+    @Override
+    public RoomResponse deleteRoom(UUID roomId) {
+
+        Room roomRented = roomRepo.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room Not Found"));
+
+        roomRented.setStatusRoom(EStatusRoom.INACTIVE);
+        roomRepo.save(roomRented);
+
+        return RoomResponse.builder()
+                .code(ResourceBundleConstant.ROM_003)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.ROM_003))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
 

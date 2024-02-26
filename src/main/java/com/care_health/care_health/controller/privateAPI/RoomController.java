@@ -29,4 +29,13 @@ public class RoomController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(RoomConstant.API_DELETE_ROOM)
+    public ResponseEntity<RoomResponse> deleteRoom(@PathVariable UUID roomId) {
+        System.out.println("start delete room " + roomId);
+        RoomResponse result = roomService.deleteRoom(roomId);
+        System.out.println("end");
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

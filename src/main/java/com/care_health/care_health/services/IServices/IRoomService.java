@@ -22,4 +22,6 @@ public interface IRoomService {
 
     List<ImageRoom> findImageByRoomId(UUID roomId);
 
+    RoomResponse deleteRoom(UUID roomId);
+
 }
