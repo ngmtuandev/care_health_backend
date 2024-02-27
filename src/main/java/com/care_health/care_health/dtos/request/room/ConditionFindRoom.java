@@ -5,14 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @Builder
 public class ConditionFindRoom {
 
+    @NotNull
     private Double minPrice;
+
+    @NotNull
     private Double maxPrice;
+
+    @NotNull
     private int numberPerson;
+
+    @NotNull
     private String district;
 
 }

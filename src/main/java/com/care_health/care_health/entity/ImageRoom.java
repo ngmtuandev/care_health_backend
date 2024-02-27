@@ -2,6 +2,7 @@ package com.care_health.care_health.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
 
@@ -29,5 +30,9 @@ public class ImageRoom extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "typeImage_id")
     private TypeImage typeImage;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

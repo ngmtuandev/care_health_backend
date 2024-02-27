@@ -18,5 +18,7 @@ public interface IImageRoomService {
 
     ListImageRoomResponse findImageByRoomIdAndTypeImageId(UUID roomId, UUID typeImageId);
 
+    ImageRoomResponse deleteImageRoom(UUID imageRoomId);
+
 
 }

@@ -3,6 +3,7 @@ package com.care_health.care_health.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.UUID;
@@ -30,5 +31,9 @@ public class ConvenientNearArea extends BaseEntity{
     @JoinColumn(name = "room_id")
     @JsonIgnore
     private Room room;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

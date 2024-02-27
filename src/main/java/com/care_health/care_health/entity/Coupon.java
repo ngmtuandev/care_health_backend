@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;
@@ -36,5 +37,9 @@ public class Coupon extends BaseEntity{
     @OneToMany(mappedBy = "coupon")
     @JsonIgnore
     private List<Room> rooms;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

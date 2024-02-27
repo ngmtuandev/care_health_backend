@@ -79,7 +79,6 @@ public class ImageRoomServiceImpl implements IImageRoomService {
                     .responseTime(baseAmenityUtil.currentTimeSeconds())
                     .build();
         } catch (Exception e) {
-            // Xây dựng phản hồi lỗi
             return ImageRoomResponse.builder()
                     .code(ResourceBundleConstant.IMGROOM_002)
                     .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
@@ -133,6 +132,21 @@ public class ImageRoomServiceImpl implements IImageRoomService {
                 .code(ResourceBundleConstant.IMGROOM_011)
                 .status(SystemConstant.STATUS_CODE_SUCCESS)
                 .message(getMessageBundle(ResourceBundleConstant.IMGROOM_011))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+    }
+
+    @Override
+    public ImageRoomResponse deleteImageRoom(UUID imageRoomId) {
+
+        Optional<ImageRoom> imageRoomDelete = imageRoomRepo.findById(imageRoomId);
+
+        imageRoomRepo.delete(imageRoomDelete.get());
+
+        return ImageRoomResponse.builder()
+                .code(ResourceBundleConstant.IMGROOM_003)
+                .status(SystemConstant.STATUS_CODE_SUCCESS)
+                .message(getMessageBundle(ResourceBundleConstant.IMGROOM_003))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
                 .build();
     }

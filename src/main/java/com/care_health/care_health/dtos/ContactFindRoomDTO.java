@@ -21,4 +21,6 @@ public class ContactFindRoomDTO {
 
     private Date timeStart;
 
+    private String description;
+
 }

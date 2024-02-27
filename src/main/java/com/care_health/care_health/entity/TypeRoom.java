@@ -4,6 +4,7 @@ import com.care_health.care_health.enums.EStatusRoom;
 import com.care_health.care_health.enums.ETypeRoom;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,5 +30,8 @@ public class TypeRoom {
     @Column(name = "Description", nullable = false)
     private String description;
 
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

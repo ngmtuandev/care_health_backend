@@ -5,6 +5,7 @@ import com.care_health.care_health.enums.ETypeRoom;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,5 +33,9 @@ public class TypeImage extends BaseEntity{
     @OneToMany(mappedBy = "typeImage")
     @JsonIgnore
     private List<ImageRoom> imageRooms;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

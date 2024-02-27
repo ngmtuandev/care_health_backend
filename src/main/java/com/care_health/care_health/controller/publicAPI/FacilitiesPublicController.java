@@ -20,7 +20,7 @@ public class FacilitiesPublicController {
     @Autowired
     FacilitiesServiceImpl facilitiesService;
 
-    @GetMapping(TypeImageConstant.API_GET_TYPE_IMAGES)
+    @GetMapping(FacilitiesConstant.API_GET_LIST_FACILITIES)
     public ResponseEntity<FacilitiesResponse> getAllFacilities() {
 
         FacilitiesResponse result = facilitiesService.getListFacilities();

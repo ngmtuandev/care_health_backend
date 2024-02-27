@@ -56,6 +56,8 @@ public class ResourceBundleConstant {
     public static final String ROM_008 = "ROM_008";
     public static final String ROM_009 = "ROM_009";
     public static final String ROM_010 = "ROM_010";
+    public static final String ROM_011 = "ROM_011";
+    public static final String ROM_012 = "ROM_012";
 
     // TypeRoom
     public static final String TYPEROOM_001 = "TYPEROOM_001";
@@ -114,5 +116,17 @@ public class ResourceBundleConstant {
     public static final String IMGROOM_009 = "IMGROOM_009";
     public static final String IMGROOM_010 = "IMGROOM_010";
     public static final String IMGROOM_011 = "IMGROOM_010";
+
+
+    // Contact find room
+    public static final String CONTACT_FINDR_001 = "CONTACT_FINDR_001";
+    public static final String CONTACT_FINDR_002 = "CONTACT_FINDR_002";
+    public static final String CONTACT_FINDR_003 = "CONTACT_FINDR_003";
+    public static final String CONTACT_FINDR_004 = "CONTACT_FINDR_004";
+    public static final String CONTACT_FINDR_005 = "CONTACT_FINDR_005";
+    public static final String CONTACT_FINDR_006 = "CONTACT_FINDR_006";
+    public static final String CONTACT_FINDR_007 = "CONTACT_FINDR_007";
+    public static final String CONTACT_FINDR_008 = "CONTACT_FINDR_008";
+    public static final String CONTACT_FINDR_009 = "CONTACT_FINDR_009";
 
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.List;
@@ -76,5 +77,9 @@ public class Room extends BaseEntity {
     private TypeRoom typeRoom;
 
     private EStatusRoom statusRoom;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

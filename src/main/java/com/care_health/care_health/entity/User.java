@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,5 +48,9 @@ public class User extends BaseEntity {
     public boolean removeRole(Roles role) {
         return this.getListRoles().remove(role);
     }
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

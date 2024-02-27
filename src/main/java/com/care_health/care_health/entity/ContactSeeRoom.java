@@ -2,6 +2,7 @@ package com.care_health.care_health.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.UUID;
@@ -31,5 +32,8 @@ public class ContactSeeRoom extends BaseEntity {
     @Column(name = "TimeSee", nullable = false)
     private Date timeSee;
 
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
 
 }

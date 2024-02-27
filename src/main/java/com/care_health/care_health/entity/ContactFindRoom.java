@@ -3,6 +3,8 @@ package com.care_health.care_health.entity;
 import com.care_health.care_health.enums.ETypeImage;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_contact_find_room")
-@Data
 @Entity
+@SuperBuilder(toBuilder = true)
 public class ContactFindRoom extends BaseEntity{
 
     @Id
@@ -25,7 +27,7 @@ public class ContactFindRoom extends BaseEntity{
     private String userName;
 
     @Column(name = "Phone", nullable = false)
-    private int phone;
+    private String phone;
 
     @Column(name = "District", nullable = false)
     private String district;
@@ -35,5 +37,12 @@ public class ContactFindRoom extends BaseEntity{
 
     @Column(name = "TimeStart", nullable = false)
     private Date timeStart;
+
+    @Column(name = "IsDelete", nullable = false)
+    @ColumnDefault("false")
+    private boolean isDelete;
+
+    @Column(name = "Descriptions", nullable = false)
+    private String descriptions;
 
 }

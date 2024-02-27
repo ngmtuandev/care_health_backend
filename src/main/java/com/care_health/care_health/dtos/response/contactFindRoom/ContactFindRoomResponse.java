@@ -1,4 +1,4 @@
-package com.care_health.care_health.dtos.response.room;
+package com.care_health.care_health.dtos.response.contactFindRoom;
 
 import com.care_health.care_health.dtos.response.base.BaseResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,10 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
-public class RoomResponse extends BaseResponse {
-
-    private int totalPages;
-
+public class ContactFindRoomResponse extends BaseResponse {
     private String message;
-
 }

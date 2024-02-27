@@ -29,4 +29,11 @@ public class ImageRoomController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(ImageRoomConstant.API_IMAGEROOM_DELETE)
+    public ResponseEntity<ImageRoomResponse> deleteImageRoom(@PathVariable UUID imageId) {
+        ImageRoomResponse result = imageRoomService.deleteImageRoom(imageId);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

@@ -4,6 +4,8 @@ import com.care_health.care_health.constant.ResourceBundleConstant;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.room.ConditionFindRoom;
 import com.care_health.care_health.dtos.request.room.RoomCreateRequest;
+import com.care_health.care_health.dtos.request.room.RoomEditRequest;
+import com.care_health.care_health.dtos.request.room.RoomUpdateStatusRequest;
 import com.care_health.care_health.dtos.response.facilities.FacilitiesResponse;
 import com.care_health.care_health.dtos.response.imageRoom.ListImageRoomResponse;
 import com.care_health.care_health.dtos.response.room.RoomDetailResponse;
@@ -52,12 +54,12 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public RoomResponse deleteRoom(UUID roomId) {
+    public RoomResponse updateStatusRoom(UUID roomId, EStatusRoom eStatusRoom) {
 
         Room roomRented = roomRepo.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room Not Found"));
 
-        roomRented.setStatusRoom(EStatusRoom.INACTIVE);
+        roomRented.setStatusRoom(eStatusRoom);
         roomRepo.save(roomRented);
 
         return RoomResponse.builder()
@@ -66,6 +68,79 @@ public class RoomServiceImpl implements IRoomService {
                 .message(getMessageBundle(ResourceBundleConstant.ROM_003))
                 .responseTime(baseAmenityUtil.currentTimeSeconds())
                 .build();
+    }
+
+    @Override
+    public RoomResponse editRoom(UUID roomEditId, RoomEditRequest roomEditRequest) {
+
+        Optional<Room> roomEdit = roomRepo.findById(roomEditId);
+
+        try {
+            if (roomEdit.isPresent()) {
+                Room room = roomEdit.get();
+
+                TypeRoom typeRoom = typeRoomRepo.findById(roomEditRequest.getTypeRoom())
+                        .orElseThrow(() -> new RuntimeException("Type Room Not Found"));
+
+                Set<Facility> facilities = roomEditRequest.getFacilities().stream()
+                        .map(facilitiesID -> facilitiesRepo.findById(facilitiesID)
+                                .orElseThrow(() -> new RuntimeException("Facilities Not Found")))
+                        .collect(Collectors.toSet());
+
+                Coupon couponCurrent = null;
+                if (roomEditRequest.getCoupon() != null) {
+                    couponCurrent = couponRepo.findById(roomEditRequest.getCoupon())
+                            .orElseThrow(() -> new RuntimeException("Coupon Not Found"));
+                }
+
+                ConvenientNearArea convenientNearArea = new ConvenientNearArea();
+                convenientNearArea.setDistance(roomEditRequest.getConvenientNearArea().getDistance());
+                convenientNearArea.setName(roomEditRequest.getConvenientNearArea().getName());
+                ConvenientNearArea newConvenientNearArea = convenientNearAreaRepo.save(convenientNearArea);
+
+
+                room.setTypeRoom(typeRoom);
+                room.setStatusRoom(roomEditRequest.getStatusRoom());
+                room.setCoupon(couponCurrent);
+                room.setDescription(roomEditRequest.getDescription());
+                room.setConvenientNearArea(newConvenientNearArea);
+                room.setDistrict(roomEditRequest.getDistrict());
+                room.setLocation(roomEditRequest.getLocation());
+                room.setFacilities(facilities);
+                room.setTitle(roomEditRequest.getTitle());
+                room.setPrice(roomEditRequest.getPrice());
+                room.setNumberPerson(roomEditRequest.getNumberPerson());
+                room.setStakeMoney(roomEditRequest.getStakeMoney());
+                room.setLeaseTerm(roomEditRequest.getLeaseTerm());
+                room.setStatusRoom(roomEditRequest.getStatusRoom());
+
+                roomRepo.save(room);
+
+                return RoomResponse.builder()
+                        .code(ResourceBundleConstant.ROM_011)
+                        .status(SystemConstant.STATUS_CODE_SUCCESS)
+                        .message(getMessageBundle(ResourceBundleConstant.ROM_011))
+                        .responseTime(baseAmenityUtil.currentTimeSeconds())
+                        .build();
+
+            }
+        } catch (Exception ex) {
+            return RoomResponse.builder()
+                    .code(ResourceBundleConstant.ROM_012)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.ROM_012))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .message(ex.getMessage())
+                    .build();
+        }
+
+        return RoomResponse.builder()
+                .code(ResourceBundleConstant.ROM_012)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.ROM_012))
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
+
     }
 
 
