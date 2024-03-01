@@ -73,6 +73,7 @@ public class FacilitiesServiceImpl implements IFacilitiesServices {
             FacilityDTO facilityDTO = new FacilityDTO();
             facilityDTO.setNameFacility(item.getNameFacility());
             facilityDTO.setNew(item.isNew());
+            facilityDTO.setId(item.getId());
             facilityDTO.setSurcharge(item.getSurcharge());
 
             facilityDTOList.add(facilityDTO);

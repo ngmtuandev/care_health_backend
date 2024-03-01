@@ -11,4 +11,6 @@ public interface ITypeRoomService {
 
     TypeRoom findByName(ETypeRoom name);
 
+    TypeRoomResponse getListTypeRoom();
+
 }

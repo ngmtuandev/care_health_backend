@@ -194,6 +194,7 @@ public class RoomServiceImpl implements IRoomService {
                     .code(ResourceBundleConstant.ROM_001)
                     .status(SystemConstant.STATUS_CODE_SUCCESS)
                     .message(getMessageBundle(ResourceBundleConstant.ROM_001))
+                    .data(result.getId())
                     .responseTime(baseAmenityUtil.currentTimeSeconds())
                     .build();
         }

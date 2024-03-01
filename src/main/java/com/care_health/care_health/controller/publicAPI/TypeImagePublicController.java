@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(SystemConstant.API + SystemConstant.VERSION_1 + SystemConstant.API_PUBLIC + TypeImageConstant.API_TYPE_IMAGE)
+
 public class TypeImagePublicController {
 
     @Autowired

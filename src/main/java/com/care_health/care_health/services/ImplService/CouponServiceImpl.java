@@ -67,6 +67,7 @@ public class CouponServiceImpl implements ICouponService {
             couponDTO.setPercentCoupon(item.getPercentCoupon());
             couponDTO.setDayEnd(item.getDayEnd());
             couponDTO.setDayStart(item.getDayStart());
+            couponDTO.setId(item.getId());
 
             couponDTOS.add(couponDTO);
 

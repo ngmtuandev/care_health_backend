@@ -77,6 +77,7 @@ public class TypeImageServiceImpl implements ITypeImageService {
         listTypeImage.stream().forEach(item -> {
             TypeImageDTO typeImageDTO = new TypeImageDTO();
             typeImageDTO.setName(item.getName());
+            typeImageDTO.setId(item.getId());
             typeImages.add(typeImageDTO);
         });
         if (listTypeImage.isEmpty()) {

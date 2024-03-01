@@ -7,12 +7,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
 @Data
 public class FacilityDTO {
+
+    private UUID id;
 
     private String nameFacility;
 

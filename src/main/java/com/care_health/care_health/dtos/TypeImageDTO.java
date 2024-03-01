@@ -9,12 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
 @Data
 public class TypeImageDTO {
+
+    private UUID id;
 
     private ETypeImage name;
 
