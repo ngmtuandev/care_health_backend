@@ -84,15 +84,16 @@ public class WebSecurityConfig  {
         System.out.println("security filter - Web security Config");
 
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(corsConfigurer -> {
-                    CorsConfigurationSource source = request -> {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                        config.setAllowedHeaders(List.of("*"));
-                        return config;
-                    };
-                    corsConfigurer.configurationSource(source);
-                })
+//                .cors(corsConfigurer -> {
+//                    CorsConfigurationSource source = request -> {
+//                        CorsConfiguration config = new CorsConfiguration();
+//                        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//                        config.setAllowedHeaders(List.of("*"));
+//                        return config;
+//                    };
+//                    corsConfigurer.configurationSource(source);
+//                })
+                .cors(corsConfigurer -> corsConfigurer.disable())
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(permitAllApis).permitAll()
                         .requestMatchers(apiDoc).permitAll()
