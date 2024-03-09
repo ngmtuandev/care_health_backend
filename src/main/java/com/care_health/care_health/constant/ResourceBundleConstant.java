@@ -129,4 +129,24 @@ public class ResourceBundleConstant {
     public static final String CONTACT_FINDR_008 = "CONTACT_FINDR_008";
     public static final String CONTACT_FINDR_009 = "CONTACT_FINDR_009";
 
+    // Content Title
+    public static final String CONTENT_TITLE_01 = "CONTENT_TITLE_01";
+    public static final String CONTENT_TITLE_02 = "CONTENT_TITLE_02";
+    public static final String CONTENT_TITLE_03 = "CONTENT_TITLE_03";
+    public static final String CONTENT_TITLE_04 = "CONTENT_TITLE_04";
+    public static final String CONTENT_TITLE_05 = "CONTENT_TITLE_05";
+    public static final String CONTENT_TITLE_06 = "CONTENT_TITLE_06";
+    public static final String CONTENT_TITLE_07 = "CONTENT_TITLE_07";
+
+
+    // Partner
+    public static final String PARTNER_01 = "PARTNER_01";
+    public static final String PARTNER_02 = "PARTNER_02";
+    public static final String PARTNER_03 = "PARTNER_03";
+    public static final String PARTNER_04 = "PARTNER_04";
+    public static final String PARTNER_05 = "PARTNER_05";
+    public static final String PARTNER_06 = "PARTNER_06";
+    public static final String PARTNER_07 = "PARTNER_07";
+
+
 }

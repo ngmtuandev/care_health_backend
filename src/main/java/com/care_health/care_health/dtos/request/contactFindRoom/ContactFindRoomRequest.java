@@ -28,7 +28,7 @@ public class ContactFindRoomRequest {
     private Double rangePrice;
 
     @NotNull(message = "TimeStart must not null")
-    private Date timeStart;
+    private String timeStart;
 
     @NotNull(message = "Descriptions must not null")
     private String descriptions;

@@ -36,7 +36,7 @@ public class ContactFindRoom extends BaseEntity{
     private Double rangePrice;
 
     @Column(name = "TimeStart", nullable = false)
-    private Date timeStart;
+    private String timeStart;
 
     @Column(name = "IsDelete", nullable = false)
     @ColumnDefault("false")

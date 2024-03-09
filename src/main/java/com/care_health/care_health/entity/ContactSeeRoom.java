@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_contact_see_room")
-@Data
 @Entity
 public class ContactSeeRoom extends BaseEntity {
 

@@ -236,8 +236,9 @@ public class RoomServiceImpl implements IRoomService {
                         .images(imageUrls)
                         .build();
                 if (responseRoom != null) {
-                    Optional<Coupon> coupon = couponRepo.findById(item.getCoupon().getId());
+
                     if (item.getCoupon() != null) {
+                        Optional<Coupon> coupon = couponRepo.findById(item.getCoupon().getId());
                         Coupon couponOptional = couponRepo.findById(item.getCoupon().getId())
                                 .orElse(null);
                         responseRoom.setCoupon(couponOptional);
