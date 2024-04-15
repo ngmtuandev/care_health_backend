@@ -22,15 +22,13 @@ public class ImageRoomPublicController {
     @GetMapping(ImageRoomConstant.API_IMAGEROOM_GET_ALL)
     public ResponseEntity<ListImageRoomResponse> getImagesOfRoom(@PathVariable UUID roomId) {
 
-        ListImageRoomResponse result = imageRoomService.getListImageOfRoom(roomId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(imageRoomService.getListImageOfRoom(roomId), HttpStatus.OK);
     }
 
     @GetMapping(ImageRoomConstant.API_IMAGEROOM_GET_TYPE)
     public ResponseEntity<ListImageRoomResponse> getImagesOfRoomForType(@PathVariable UUID roomId, @PathVariable UUID typeImage) {
 
-        ListImageRoomResponse result = imageRoomService.findImageByRoomIdAndTypeImageId(roomId, typeImage);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(imageRoomService.findImageByRoomIdAndTypeImageId(roomId, typeImage), HttpStatus.OK);
     }
 
 }

@@ -26,9 +26,7 @@ public class TypeImagePublicController {
     @GetMapping(TypeImageConstant.API_GET_TYPE_IMAGES)
     public ResponseEntity<TypeImageResponse> getAllTypeImages() {
 
-        TypeImageResponse result = typeImageService.getListTypeImage();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(typeImageService.getListTypeImage(), HttpStatus.OK);
     }
 
 }

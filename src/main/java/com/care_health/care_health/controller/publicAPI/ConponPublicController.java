@@ -24,9 +24,7 @@ public class ConponPublicController {
     @GetMapping(CouponConstant.API_GET_COUPONS)
     public ResponseEntity<CouponResponse> getAllCoupon() {
 
-        CouponResponse result = couponService.getAllCoupon();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(couponService.getAllCoupon(), HttpStatus.OK);
     }
 
 }

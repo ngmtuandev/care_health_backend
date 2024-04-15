@@ -22,17 +22,15 @@ public class ContactFindRoomController {
     //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ContactFindRoomConstant.API_GET_CONTACT_FIND_ROOMS)
     public ResponseEntity<ContactFindRoomResponse> getAllContactFindRoom() {
-        ContactFindRoomResponse result = contactFindRoomService.getListContactFindRooms();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(contactFindRoomService.getListContactFindRooms(), HttpStatus.OK);
     }
 
     //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ContactFindRoomConstant.API_GET_CONTACT_FIND_ROOM)
     public ResponseEntity<ContactFindRoomResponse> getItemContactFindRoom(@PathVariable UUID contactFindRoomId) {
-        ContactFindRoomResponse result = contactFindRoomService.getItemContactFindRoom(contactFindRoomId);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(contactFindRoomService.getItemContactFindRoom(contactFindRoomId), HttpStatus.OK);
     }
 
 }

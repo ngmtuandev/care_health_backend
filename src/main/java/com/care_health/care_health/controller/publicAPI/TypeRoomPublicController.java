@@ -22,9 +22,7 @@ public class TypeRoomPublicController {
     @GetMapping(TypeRoomConstant.API_LIST_TYPE_ROOM)
     public ResponseEntity<TypeRoomResponse> getAllTypeRoom() {
 
-        TypeRoomResponse result = typeRoomService.getListTypeRoom();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(typeRoomService.getListTypeRoom(), HttpStatus.OK);
     }
 
 }

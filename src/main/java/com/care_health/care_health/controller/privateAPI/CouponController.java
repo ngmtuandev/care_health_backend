@@ -28,9 +28,8 @@ public class CouponController {
     //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(CouponConstant.API_CREATE_COUPON)
     public ResponseEntity<CouponResponse> createNewCoupon(@RequestBody CouponCreateRequest couponCreateRequest) {
-        CouponResponse result = couponService.newCoupon(couponCreateRequest);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(couponService.newCoupon(couponCreateRequest), HttpStatus.OK);
     }
 
 }

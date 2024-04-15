@@ -1,12 +1,12 @@
 package com.care_health.care_health.entity;
 
+import com.care_health.care_health.dtos.GuestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
-import java.util.List;
+
 import java.util.UUID;
 
 @Getter
@@ -31,10 +31,21 @@ public class Booking extends BaseEntity {
     private Boolean totalPayment;
 
     @Column(name = "RoomId", nullable = false)
-    @OneToMany(mappedBy = "room")
-    @JsonIgnore
-    private List<ImageRoom> imageRooms;
+    private UUID room_id;
 
+    @Column(name = "QuanlityDay", nullable = false)
+    private Number quanlityDay;
 
+    @Column(name = "UserName", unique = true, nullable = false)
+    private String userName;
+
+    @Column (name = "Phone", nullable = false)
+    private Number phoneNumber;
+
+    @Column (name = "Address", nullable = false)
+    private String address;
+
+    @Column (name = "Email", nullable = false)
+    private String email;
 
 }

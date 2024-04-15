@@ -24,9 +24,7 @@ public class TypeRoomController {
     @PostMapping(TypeRoomConstant.API_CREATE_TYPE_ROOM)
     public ResponseEntity<TypeRoomResponse> createNewTypeRoom(@RequestBody TypeRoomCreateRequest typeRoomCreateRequest) {
 
-        TypeRoomResponse result = typeRoomService.createTypeRoom(typeRoomCreateRequest);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(typeRoomService.createTypeRoom(typeRoomCreateRequest), HttpStatus.OK);
     }
 
 }

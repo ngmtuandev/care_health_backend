@@ -33,8 +33,7 @@ public class UserPublicController {
 
     @PostMapping(UserConstant.API_REGISTER)
     public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterRequest requestDTO) {
-        UserResponse result =userService.register(requestDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(userService.register(requestDTO), HttpStatus.OK);
     }
 
     @PostMapping(UserConstant.API_LOGIN)

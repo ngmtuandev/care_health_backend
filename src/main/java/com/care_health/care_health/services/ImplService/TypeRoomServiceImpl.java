@@ -58,7 +58,11 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
     @Override
     public TypeRoomResponse createTypeRoom(TypeRoomCreateRequest typeRoomCreateRequest) {
 
+        System.out.println(typeRoomCreateRequest);
+
         TypeRoom findTypeRoom = findByName(typeRoomCreateRequest.getName());
+
+        System.out.println("find type room" + findTypeRoom);
         if (findTypeRoom != null) {
             return TypeRoomResponse.builder()
                     .code(ResourceBundleConstant.TYPEROOM_007)
@@ -70,6 +74,7 @@ public class TypeRoomServiceImpl implements ITypeRoomService {
 
         else {
             TypeRoom newTypeRoom = new TypeRoom();
+            System.out.println("new type room");
             newTypeRoom.setDescription(typeRoomCreateRequest.getDescription());
             newTypeRoom.setName(typeRoomCreateRequest.getName());
 

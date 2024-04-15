@@ -22,9 +22,7 @@ public class ContactFindRoomPublicController {
     @PostMapping(ContactFindRoomConstant.API_CREATE_CONTACT_FIND_ROOM)
     public ResponseEntity<ContactFindRoomResponse> getCreateContactFindRoom(@RequestBody ContactFindRoomRequest contactFindRoomRequest) {
 
-        ContactFindRoomResponse result = contactFindRoomService.createNewContactFindRoom(contactFindRoomRequest);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(contactFindRoomService.createNewContactFindRoom(contactFindRoomRequest), HttpStatus.OK);
     }
 
 }

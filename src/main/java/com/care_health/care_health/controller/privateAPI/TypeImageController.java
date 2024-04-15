@@ -24,9 +24,8 @@ public class TypeImageController {
     @PostMapping(TypeImageConstant.API_CREATE_TYPE_IMAGE)
     public ResponseEntity<TypeImageResponse> createTypeImage(@RequestBody TypeImageRequest typeImageRequest) {
 
-        TypeImageResponse result = typeImageService.newTypeImage(typeImageRequest);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(typeImageService.newTypeImage(typeImageRequest), HttpStatus.OK);
     }
 
 

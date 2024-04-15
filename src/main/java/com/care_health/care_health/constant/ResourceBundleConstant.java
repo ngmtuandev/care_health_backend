@@ -149,4 +149,16 @@ public class ResourceBundleConstant {
     public static final String PARTNER_07 = "PARTNER_07";
 
 
+
+    // Booking
+    public static final String BOOKING_01 = "BOOKING_01";
+    public static final String BOOKING_02 = "BOOKING_02";
+    public static final String BOOKING_03 = "BOOKING_03";
+    public static final String BOOKING_04 = "BOOKING_04";
+    public static final String BOOKING_05 = "BOOKING_05";
+    public static final String BOOKING_06 = "BOOKING_06";
+    public static final String BOOKING_07 = "BOOKING_07";
+    public static final String BOOKING_08 = "BOOKING_08";
+
+
 }

@@ -53,9 +53,8 @@ public class RoomPublicController {
                 .district(district)
                 .build();
 
-        RoomResponse result = roomService.findRoomByCondition(conditionFindRoom);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(roomService.findRoomByCondition(conditionFindRoom), HttpStatus.OK);
     }
 
 }

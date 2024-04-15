@@ -23,9 +23,8 @@ public class FacilitiesPublicController {
     @GetMapping(FacilitiesConstant.API_GET_LIST_FACILITIES)
     public ResponseEntity<FacilitiesResponse> getAllFacilities() {
 
-        FacilitiesResponse result = facilitiesService.getListFacilities();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(facilitiesService.getListFacilities(), HttpStatus.OK);
     }
 
 }

@@ -24,16 +24,14 @@ public class ImageRoomController {
     //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(ImageRoomConstant.API_IMAGEROOM_CREATE)
     public ResponseEntity<ImageRoomResponse> createImageForRoom(@RequestParam("files") List<MultipartFile> files, @PathVariable UUID roomId, @PathVariable UUID typeImage) {
-        ImageRoomResponse result = imageRoomService.uploadImageRoom(files, roomId, typeImage);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(imageRoomService.uploadImageRoom(files, roomId, typeImage), HttpStatus.OK);
     }
 
     @PostMapping(ImageRoomConstant.API_IMAGEROOM_DELETE)
     public ResponseEntity<ImageRoomResponse> deleteImageRoom(@PathVariable UUID imageId) {
-        ImageRoomResponse result = imageRoomService.deleteImageRoom(imageId);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(imageRoomService.deleteImageRoom(imageId), HttpStatus.OK);
     }
 
 }
