@@ -24,12 +24,6 @@ public class Booking extends BaseEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "StatusPayment", nullable = false)
-    private Boolean statusPayment;
-
-    @Column(name = "TotalPayment", nullable = false)
-    private Boolean totalPayment;
-
     @Column(name = "RoomId", nullable = false)
     private UUID room_id;
 
