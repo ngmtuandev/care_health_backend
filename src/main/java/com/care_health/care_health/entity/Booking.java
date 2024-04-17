@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -41,5 +42,11 @@ public class Booking extends BaseEntity {
 
     @Column (name = "Email", nullable = false)
     private String email;
+
+    @Column (name = "Total", nullable = false)
+    private Double total;
+
+    @Column (name = "DayEnd", nullable = false)
+    private LocalDateTime dayEnd;
 
 }

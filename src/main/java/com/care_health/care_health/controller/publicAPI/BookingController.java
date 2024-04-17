@@ -4,6 +4,7 @@ import com.care_health.care_health.constant.BookingConstant;
 import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.booking.BookingRequest;
 import com.care_health.care_health.dtos.response.booking.BookingResponse;
+import com.care_health.care_health.dtos.response.booking.InfoCreateBooking;
 import com.care_health.care_health.services.ImplService.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class BookingController {
     @PostMapping(BookingConstant.API_CREATE_BOOKING)
     public ResponseEntity<BookingResponse> createBooking(@RequestBody BookingRequest bookingRequest, @PathVariable UUID session_id) {
         return new ResponseEntity<>(bookingService.createBooking(bookingRequest, session_id), HttpStatus.OK);
+    }
+
+    @PostMapping(BookingConstant.API_CONFIRM_BOOKING)
+    public ResponseEntity<BookingResponse> confirmBooking(@PathVariable UUID session_id, @RequestBody InfoCreateBooking infoCreateBooking) {
+        return new ResponseEntity<>(bookingService.confirmBooking(session_id, infoCreateBooking), HttpStatus.OK);
     }
 
 }

@@ -24,4 +24,6 @@ public class InfoCreateBooking {
 
     private Double totalPayment;
 
+    private Number quanlityDay;
+
 }

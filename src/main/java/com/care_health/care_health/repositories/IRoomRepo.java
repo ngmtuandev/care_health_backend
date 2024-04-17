@@ -24,4 +24,12 @@ public interface IRoomRepo extends JpaRepository<Room, UUID> {
             """)
     List<Room> roomsByCondition(ConditionFindRoom conditionFindRoom);
 
+//    @Query("""
+//            UPDATE Room r
+//            INNER JOIN Booking b ON r.id = b.room_id
+//            SET r.statusRoom = 'EMPTY'
+//            WHERE b.dayEnd > NOW()
+//            """)
+//    List<Room> roomsByCondition(ConditionFindRoom conditionFindRoom);
+
 }

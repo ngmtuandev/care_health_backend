@@ -5,6 +5,7 @@ import com.care_health.care_health.constant.SystemConstant;
 import com.care_health.care_health.dtos.request.booking.BookingRequest;
 import com.care_health.care_health.dtos.response.booking.BookingResponse;
 import com.care_health.care_health.dtos.response.booking.InfoCreateBooking;
+import com.care_health.care_health.entity.Booking;
 import com.care_health.care_health.entity.BookingSessions;
 import com.care_health.care_health.entity.Room;
 import com.care_health.care_health.enums.EStatusRoom;
@@ -88,6 +89,8 @@ public class BookingServiceImpl implements IBookingService {
 
         LocalDateTime nowTimeSession = LocalDateTime.now();
 
+//        HttpSession session = request.getSession();
+
         Optional<BookingSessions> bookingSessionsNow = bookingSessionsRepo.findById(idSession);
 
         if (!bookingSessionsNow.isPresent() || nowTimeSession.isAfter(bookingSessionsNow.get().getEndTime())) {
@@ -120,6 +123,9 @@ public class BookingServiceImpl implements IBookingService {
         infoCreateBooking.setTotalPayment(totalPayMent);
         infoCreateBooking.setPhoneNumber(bookingRequest.getPhoneNumber());
         infoCreateBooking.setUserName(bookingRequest.getUserName());
+        infoCreateBooking.setQuanlityDay(bookingRequest.getQuanlityDay());
+
+//        session.setAttribute("infor_guest", bookingRequest);
 
         return BookingResponse.builder()
                 .code(ResourceBundleConstant.BOOKING_01)
@@ -132,14 +138,62 @@ public class BookingServiceImpl implements IBookingService {
     }
 
     @Override
-    public BookingResponse confirmBooking(UUID bookingId) {
-        return null;
+    public BookingResponse confirmBooking(UUID sessionBookingId, InfoCreateBooking infoCreateBooking) {
+
+//        HttpSession session = request.getSession();
+
+        BookingSessions bookingSessionsCurrent = bookingSessionsRepo.findById(sessionBookingId)
+                .orElseThrow(() -> new RuntimeException("Booking Session Not Found"));
+
+        Room roomBooking = roomRepo.findById(bookingSessionsCurrent.getRoomId())
+                .orElseThrow(() -> new RuntimeException("Room Not Found"));
+
+        LocalDateTime nowTimeSession = LocalDateTime.now();
+
+        if (nowTimeSession.isAfter(bookingSessionsCurrent.getEndTime()) || !roomBooking.getStatusRoom().equals(statusRoom)) {
+            return BookingResponse.builder()
+                    .code(ResourceBundleConstant.BOOKING_08)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.BOOKING_08))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
+        }
+
+//        BookingRequest bookingRequest = (BookingRequest) session.getAttribute("infor_guest");
+//        System.out.println("bookingRequest ->>>>>>" + bookingRequest);
+
+        Booking newBooking = Booking.builder()
+                .email(infoCreateBooking.getEmail())
+                .address(infoCreateBooking.getAddress())
+                .phoneNumber(infoCreateBooking.getPhoneNumber())
+                .total(infoCreateBooking.getTotalPayment())
+                .quanlityDay(infoCreateBooking.getQuanlityDay())
+                .userName(infoCreateBooking.getUserName())
+                .dayEnd(nowTimeSession.plusDays(infoCreateBooking.getQuanlityDay().longValue()))
+                .room_id(bookingSessionsCurrent.getRoomId())
+                .build();
+
+
+        roomBooking.setStatusRoom(EStatusRoom.INACTIVE);
+        roomRepo.save(roomBooking);
+
+        Booking newSaveBooking = bookingRepo.save(newBooking);
+
+        bookingSessionsRepo.delete(bookingSessionsCurrent);
+
+        return BookingResponse.builder()
+                .code(ResourceBundleConstant.BOOKING_09)
+                .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                .message(getMessageBundle(ResourceBundleConstant.BOOKING_09))
+                .data(newSaveBooking)
+                .responseTime(baseAmenityUtil.currentTimeSeconds())
+                .build();
     }
 
 
     @Scheduled(fixedRate = 300)
     public void cleanupExpiredSessions() {
-        System.out.println("cleanupExpiredSessions run....");
+//        System.out.println("cleanupExpiredSessions run....");
         LocalDateTime nowTimeSession = LocalDateTime.now();
 
 
@@ -175,6 +229,22 @@ public class BookingServiceImpl implements IBookingService {
 //                }
 //            }
 //        }
+
+    }
+
+
+    @Scheduled(fixedRate = 600)  // setting 1 day check once
+    public void setStatusRoomWhenExpire() {
+
+        List<Room> listRoomExpire = bookingRepo.roomsExpire();
+
+        listRoomExpire.stream().forEach(item -> {
+//            System.out.println("id room expire : " + item.getId() + "extra : " + item.getDescription());
+
+        item.setStatusRoom(EStatusRoom.EMPTY);
+        roomRepo.save(item);
+
+        });
 
     }
 

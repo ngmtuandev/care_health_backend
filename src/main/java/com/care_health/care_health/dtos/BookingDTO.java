@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -27,5 +28,7 @@ public class BookingDTO {
     private String address;
 
     private String email;
+
+    private LocalDateTime dayEnd;
 
 }

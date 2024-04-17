@@ -159,6 +159,7 @@ public class ResourceBundleConstant {
     public static final String BOOKING_06 = "BOOKING_06";
     public static final String BOOKING_07 = "BOOKING_07";
     public static final String BOOKING_08 = "BOOKING_08";
+    public static final String BOOKING_09 = "BOOKING_09";
 
 
 }
