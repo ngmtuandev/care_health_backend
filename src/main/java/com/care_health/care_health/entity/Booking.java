@@ -49,4 +49,7 @@ public class Booking extends BaseEntity {
     @Column (name = "DayEnd", nullable = false)
     private LocalDateTime dayEnd;
 
+    @Column (name = "DayStart", nullable = false)
+    private LocalDateTime dayStart;
+
 }

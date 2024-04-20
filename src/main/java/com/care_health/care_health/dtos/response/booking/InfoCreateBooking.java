@@ -3,6 +3,7 @@ package com.care_health.care_health.dtos.response.booking;
 import com.care_health.care_health.entity.Room;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -25,5 +26,7 @@ public class InfoCreateBooking {
     private Double totalPayment;
 
     private Number quanlityDay;
+
+    private LocalDateTime dayStart;
 
 }

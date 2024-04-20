@@ -48,8 +48,9 @@ public class BookingServiceImpl implements IBookingService {
     @Override
     public BookingResponse firstBooking(UUID room_id) {
 
+
         Room findRoomCheck = roomRepo.findById(room_id).orElse(null);
-        if (findRoomCheck == null || findRoomCheck.getStatusRoom() != EStatusRoom.EMPTY) {
+        if (findRoomCheck == null) {
             return BookingResponse.builder()
                     .code(ResourceBundleConstant.BOOKING_06)
                     .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
@@ -93,6 +94,10 @@ public class BookingServiceImpl implements IBookingService {
 
         Optional<BookingSessions> bookingSessionsNow = bookingSessionsRepo.findById(idSession);
 
+        Number checkDayStartBooking = bookingRepo.findCheckDayBooking(bookingRequest.getDayStart(), bookingRequest.getRoom_id());
+
+        System.out.println("check day start booking ->>" + checkDayStartBooking);
+
         if (!bookingSessionsNow.isPresent() || nowTimeSession.isAfter(bookingSessionsNow.get().getEndTime())) {
             return BookingResponse.builder()
                     .code(ResourceBundleConstant.BOOKING_08)
@@ -100,7 +105,15 @@ public class BookingServiceImpl implements IBookingService {
                     .message(getMessageBundle(ResourceBundleConstant.BOOKING_08))
                     .responseTime(baseAmenityUtil.currentTimeSeconds())
                     .build();
+        }
 
+        if (bookingRequest.getDayStart().isBefore(nowTimeSession)) {
+            return BookingResponse.builder()
+                    .code(ResourceBundleConstant.BOOKING_10)
+                    .status(SystemConstant.STATUS_CODE_BAD_REQUEST)
+                    .message(getMessageBundle(ResourceBundleConstant.BOOKING_10))
+                    .responseTime(baseAmenityUtil.currentTimeSeconds())
+                    .build();
         }
 
         Room roomBooking = roomRepo.findById(bookingSessionsNow.get().getRoomId()).get();
@@ -114,13 +127,13 @@ public class BookingServiceImpl implements IBookingService {
                     .build();
         }
 
-        double totalPayMent = roomBooking.getPrice() * bookingRequest.getQuanlityDay().doubleValue();
+        double totalPayment = roomBooking.getPrice() * bookingRequest.getQuanlityDay().doubleValue();
 
         InfoCreateBooking infoCreateBooking = new InfoCreateBooking();
         infoCreateBooking.setAddress(bookingRequest.getAddress());
         infoCreateBooking.setEmail(bookingRequest.getEmail());
         infoCreateBooking.setRoom(roomBooking);
-        infoCreateBooking.setTotalPayment(totalPayMent);
+        infoCreateBooking.setTotalPayment(totalPayment);
         infoCreateBooking.setPhoneNumber(bookingRequest.getPhoneNumber());
         infoCreateBooking.setUserName(bookingRequest.getUserName());
         infoCreateBooking.setQuanlityDay(bookingRequest.getQuanlityDay());
@@ -169,12 +182,13 @@ public class BookingServiceImpl implements IBookingService {
                 .total(infoCreateBooking.getTotalPayment())
                 .quanlityDay(infoCreateBooking.getQuanlityDay())
                 .userName(infoCreateBooking.getUserName())
-                .dayEnd(nowTimeSession.plusDays(infoCreateBooking.getQuanlityDay().longValue()))
+                .dayEnd(infoCreateBooking.getDayStart().plusDays(infoCreateBooking.getQuanlityDay().longValue()))
                 .room_id(bookingSessionsCurrent.getRoomId())
+                .dayStart(infoCreateBooking.getDayStart())
                 .build();
 
 
-        roomBooking.setStatusRoom(EStatusRoom.INACTIVE);
+//        roomBooking.setStatusRoom(EStatusRoom.INACTIVE);
         roomRepo.save(roomBooking);
 
         Booking newSaveBooking = bookingRepo.save(newBooking);
@@ -233,7 +247,7 @@ public class BookingServiceImpl implements IBookingService {
     }
 
 
-    @Scheduled(fixedRate = 600)  // setting 1 day check once
+    @Scheduled(fixedRate = 600)  // setting 1 day check once if room booking expire will update empty status room
     public void setStatusRoomWhenExpire() {
 
         List<Room> listRoomExpire = bookingRepo.roomsExpire();

@@ -31,4 +31,6 @@ public class BookingDTO {
 
     private LocalDateTime dayEnd;
 
+    private  LocalDateTime dayStart;
+
 }

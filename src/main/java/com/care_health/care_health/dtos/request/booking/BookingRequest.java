@@ -2,6 +2,7 @@ package com.care_health.care_health.dtos.request.booking;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -22,5 +23,7 @@ public class BookingRequest {
     private String address;
 
     private String email;
+
+    private LocalDateTime dayStart;
 
 }
